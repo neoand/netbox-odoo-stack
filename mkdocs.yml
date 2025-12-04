@@ -1,0 +1,66 @@
+site_name: "netbox-odoo-stack Docs"
+site_description: "Documentação PT/ES de integração NetBox + Odoo + neo_stack"
+site_url: ""
+theme:
+  name: material
+  language: pt
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - content.code.copy
+    - content.tabs.link
+    - search.highlight
+    - search.suggest
+extra_css: []
+markdown_extensions:
+  - admonition
+  - toc:
+      permalink: true
+  - tables
+  - def_list
+  - footnotes
+  - codehilite
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+plugins:
+  - search
+nav:
+  - PT:
+      - Visão geral: docs/pt/overview.md
+      - Setup: docs/pt/setup.md
+      - Arquitetura: docs/pt/architecture.md
+      - Histórias & Casos Reais:
+          - Histórias de Dor: docs/pt/historias/dores-reais.md
+          - PWAs para Time de Campo: docs/pt/historias/pwas-campo.md
+      - Aprendizado:
+          - Primeiros Passos: docs/pt/learning/primeiros-passos.md
+          - Glossário Interativo: docs/pt/learning/glossario.md
+          - Trilha de aprendizado: docs/pt/learning/roadmap.md
+      - Casos de Uso:
+          - Gerenciamento de IPs: docs/pt/casos-uso/gerenciamento-ips.md
+          - Drift Detection: docs/pt/casos-uso/drift-detection.md
+          - Pipelines de Provisionamento: docs/pt/casos-uso/provisionamento.md
+          - Compliance e Auditoria: docs/pt/casos-uso/compliance.md
+          - Neo Stack Framework: docs/pt/casos-uso/neo-stack-framework.md
+      - Integrações:
+          - NetBox + Odoo: docs/pt/integrations/netbox-odoo.md
+          - NetBox + neo_stack: docs/pt/integrations/netbox-neo_stack.md
+      - Dev & Operação:
+          - Guia de APIs: docs/pt/dev/api-guide.md
+          - Guia Dev & Operação: docs/pt/dev/guia-dev.md
+          - Troubleshooting Devs: docs/pt/troubleshooting-devs.md
+      - Playbooks: docs/pt/playbooks/operacao.md
+      - Troubleshooting: docs/pt/troubleshooting.md
+  - ES:
+      - Visión general: docs/es/overview.md
+      - Setup: docs/es/setup.md
+      - Arquitectura: docs/es/architecture.md
+      - Integraciones:
+          - NetBox + Odoo: docs/es/integrations/netbox-odoo.md
+          - NetBox + neo_stack: docs/es/integrations/netbox-neo_stack.md
+      - Dev y Operación: docs/es/dev/guia-dev.md
+      - Playbooks: docs/es/playbooks/operacion.md
+      - Troubleshooting: docs/es/troubleshooting.md
+      - Ruta de aprendizaje: docs/es/learning/roadmap.md
