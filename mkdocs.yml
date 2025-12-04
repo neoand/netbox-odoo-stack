@@ -57,10 +57,22 @@ nav:
       - Visión general: docs/es/overview.md
       - Setup: docs/es/setup.md
       - Arquitectura: docs/es/architecture.md
+      - Historias & Casos Reales:
+          - Historias de Dolor: docs/es/historias/dolores-reales.md
+          - PWAs para Equipo de Campo: docs/es/historias/pwas-campo.md
+      - Aprendizaje:
+          - Primeros Pasos: docs/es/learning/primeros-pasos.md
+          - Glosario Interactivo: docs/es/learning/glosario.md
+          - Ruta de aprendizaje: docs/es/learning/roadmap.md
+      - Casos de Uso:
+          - Gestión de IPs: docs/es/casos-uso/gerenciamento-ips.md
+          - Neo Stack Framework: docs/es/casos-uso/neo-stack-framework.md
       - Integraciones:
           - NetBox + Odoo: docs/es/integrations/netbox-odoo.md
           - NetBox + neo_stack: docs/es/integrations/netbox-neo_stack.md
-      - Dev y Operación: docs/es/dev/guia-dev.md
+      - Dev y Operación:
+          - Guía de APIs: docs/es/dev/api-guide.md
+          - Guía Dev & Operación: docs/es/dev/guia-dev.md
+          - Troubleshooting Devs: docs/es/troubleshooting-devs.md
       - Playbooks: docs/es/playbooks/operacion.md
       - Troubleshooting: docs/es/troubleshooting.md
-      - Ruta de aprendizaje: docs/es/learning/roadmap.md
