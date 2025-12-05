@@ -66,6 +66,9 @@ nav:
           - Ruta de aprendizaje: docs/es/learning/roadmap.md
       - Casos de Uso:
           - Gestión de IPs: docs/es/casos-uso/gerenciamento-ips.md
+          - Detección de Drift: docs/es/casos-uso/drift-detection.md
+          - Pipelines de Provisionamiento: docs/es/casos-uso/provisionamiento.md
+          - Compliance y Auditoría: docs/es/casos-uso/compliance.md
           - Neo Stack Framework: docs/es/casos-uso/neo-stack-framework.md
       - Integraciones:
           - NetBox + Odoo: docs/es/integrations/netbox-odoo.md
@@ -76,3 +79,11 @@ nav:
           - Troubleshooting Devs: docs/es/troubleshooting-devs.md
       - Playbooks: docs/es/playbooks/operacion.md
       - Troubleshooting: docs/es/troubleshooting.md
+  - Comunidad:
+      - Recursos de la Comunidad: community/docs/es/overview.md
+      - Device Types:
+          - Guía de Device Types: community/docs/device-types.md
+          - Guía de Importación: community/docs/es/device-types/import-guide.md
+      - Plugins: community/docs/plugins.md
+      - Templates: community/docs/templates.md
+      - Ejemplos Reales: community/docs/examples.md
