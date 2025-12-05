@@ -594,6 +594,60 @@ Exemplo:
 
 ---
 
+## 📚 **Quick References & Troubleshooting**
+
+> **Para desenvolvedores que precisam de respostas RÁPIDAS**
+
+### **🇧🇷 Português**
+```
+docs/pt/quick-refs/               → 9 Cheat Sheets
+├── netbox-cli.md                 → 50+ comandos
+├── api-endpoints.md              → REST + GraphQL
+├── docker-commands.md            → Container commands
+├── python-scripts.md             → 20+ scripts
+├── odoo-integration.md           → Sync NetBox↔Odoo
+└── README.md                     → Índice completo
+
+docs/pt/troubleshooting/          → Soluções
+└── README.md                     → 20+ problemas e soluções
+```
+
+### **🇲🇽 Español**
+```
+docs/es/quick-refs/               → 9 Cheat Sheets
+├── netbox-cli.md                 → 50+ comandos
+├── docker-commands.md            → Comandos Docker
+├── api-endpoints.md              → REST + GraphQL
+└── README.md                     → Índice completo
+
+docs/es/troubleshooting/          → Soluciones
+└── README.md                     → 20+ problemas y soluciones
+```
+
+**🎯 Exemplos Práticos:**
+```bash
+# NetBox CLI
+nb-cli device add --name="Switch-01"
+nb-cli vlan create --vid=100 --name="USERS"
+
+# Python API
+from pynetbox import api
+nb = api("http://localhost:8000", token="YOUR_TOKEN")
+device = nb.dcim.devices.create(name="Server-01")
+
+# Docker
+docker-compose up -d
+docker-compose logs -f netbox
+```
+
+**👉 [Ver Quick References PT](docs/pt/quick-refs/README.md)**
+**👉 [Ver Troubleshooting PT](docs/pt/troubleshooting/README.md)**
+
+**👉 [Ver Quick References ES](docs/es/quick-refs/README.md)**
+**👉 [Ver Troubleshooting ES](docs/es/troubleshooting/README.md)**
+
+---
+
 ## 🛠️ **Stack Tecnológico — O Arsenal**
 
 <div align="center">
