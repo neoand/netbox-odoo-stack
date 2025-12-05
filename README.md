@@ -648,6 +648,42 @@ docker-compose logs -f netbox
 
 ---
 
+## 🎯 **Implementation Guide - Do Caos à Organização**
+
+> **Para equipes que precisam implementar NetBox em ambiente desordenado**
+
+### **🇧🇷 Português - Guia Completo (30 dias)**
+```
+docs/pt/implementation-guide/
+├── README.md                 → Índice completo
+├── business-case.md          → ROI 250% primeiro ano
+├── roadmap.md                → Cronograma detalhado
+├── phase-01-planning.md      → Fase 1 (Planejamento)
+└── phase-02-*.md             → [Em desenvolvimento]
+```
+
+### **🇲🇽 Español - Guía Completa (30 días)**
+```
+docs/es/implementation-guide/
+├── README.md                 → Índice completo
+└── [Más archivos]            → [En desarrollo]
+```
+
+**🎯 Cenário:** Ambiente com 500+ dispositivos desorganizados, switches, virtualização, proxies, múltiplas WANs, APs, equipe sem conhecimento NetBox.
+
+**📊 Cronograma:**
+- Semana 1: Planejamento & Setup NetBox
+- Semana 2: Descoberta & Coleta de Dados
+- Semana 3: Importação & Configuração
+- Semana 4: Go-Live & Operação
+
+**💰 ROI:** Payback em 2.3 meses, economia R$ 630K/ano
+
+**[👉 Ver Implementation Guide PT](docs/pt/implementation-guide/README.md)**
+**[👉 Ver Implementation Guide ES](docs/es/implementation-guide/README.md)**
+
+---
+
 ## 🛠️ **Stack Tecnológico — O Arsenal**
 
 <div align="center">
