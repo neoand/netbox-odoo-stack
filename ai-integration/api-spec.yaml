@@ -1,0 +1,1020 @@
+# 🤖 AI Integration API Specification
+# NetBox Intelligent Assistant
+
+openapi: 3.0.3
+info:
+  title: NetBox AI Assistant API
+  version: 1.0.0
+  description: AI-powered features for NetBox platform including chatbot, semantic search, and predictive analytics
+  contact:
+    name: NetBox AI Team
+    email: ai@netbox.com
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+
+servers:
+  - url: https://ai.netbox.com/v1
+    description: Production server
+  - url: https://staging-ai.netbox.com/v1
+    description: Staging server
+  - url: http://localhost:3000/v1
+    description: Local development
+
+security:
+  - BearerAuth: []
+  - ApiKeyAuth: []
+
+paths:
+  # ==================================================
+  # CHATBOT ENDPOINTS
+  # ==================================================
+
+  /chatbot:
+    post:
+      tags:
+        - Chatbot
+      summary: Send message to AI chatbot
+      description: Interact with the NetBox AI assistant for support and guidance
+      operationId: sendChatMessage
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChatMessageRequest'
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+                  description: User message
+                language:
+                  type: string
+                  enum: [pt-BR, es-ES, en-US]
+                  default: en-US
+                context:
+                  type: object
+                  description: Current context (page, selected object, etc.)
+                attachments:
+                  type: array
+                  items:
+                    type: string
+                    format: binary
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChatMessageResponse'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '429':
+          $ref: '#/components/responses/RateLimit'
+
+  /chatbot/history:
+    get:
+      tags:
+        - Chatbot
+      summary: Get chat history
+      description: Retrieve conversation history for a user
+      operationId: getChatHistory
+      parameters:
+        - name: user_id
+          in: query
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 50
+            maximum: 200
+        - name: offset
+          in: query
+          schema:
+            type: integer
+            default: 0
+      responses:
+        '200':
+          description: Chat history retrieved
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  messages:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ChatMessage'
+                  total:
+                    type: integer
+                  has_more:
+                    type: boolean
+
+  # ==================================================
+  # SEMANTIC SEARCH ENDPOINTS
+  # ==================================================
+
+  /search:
+    get:
+      tags:
+        - Search
+      summary: Perform semantic search
+      description: Intelligent search across documentation, videos, and community content
+      operationId: performSearch
+      parameters:
+        - name: q
+          in: query
+          required: true
+          schema:
+            type: string
+          description: Search query
+        - name: type
+          in: query
+          schema:
+            type: string
+            enum: [all, docs, videos, code, forum]
+            default: all
+          description: Content type filter
+        - name: language
+          in: query
+          schema:
+            type: string
+            enum: [pt-BR, es-ES, en-US]
+          description: Language filter
+        - name: difficulty
+          in: query
+          schema:
+            type: string
+            enum: [beginner, intermediate, advanced]
+          description: Difficulty level filter
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 10
+            maximum: 100
+        - name: offset
+          in: query
+          schema:
+            type: integer
+            default: 0
+      responses:
+        '200':
+          description: Search results
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/SearchResult'
+                  total:
+                    type: integer
+                  query_time_ms:
+                    type: number
+                  suggestions:
+                    type: array
+                    items:
+                      type: string
+
+  /search/suggestions:
+    get:
+      tags:
+        - Search
+      summary: Get search suggestions
+      description: Auto-complete and suggestions based on query
+      operationId: getSearchSuggestions
+      parameters:
+        - name: q
+          in: query
+          required: true
+          schema:
+            type: string
+          description: Partial query
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 5
+            maximum: 20
+      responses:
+        '200':
+          description: Suggestions retrieved
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  suggestions:
+                    type: array
+                    items:
+                      type: string
+                  related_queries:
+                    type: array
+                    items:
+                      type: string
+
+  # ==================================================
+  # SUGGESTIONS ENDPOINTS
+  # ==================================================
+
+  /suggestions/device/{device_id}:
+    get:
+      tags:
+        - Suggestions
+      summary: Get device suggestions
+      description: AI-powered suggestions for a specific device
+      operationId: getDeviceSuggestions
+      parameters:
+        - name: device_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Suggestions retrieved
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  suggestions:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/DeviceSuggestion'
+                  confidence:
+                    type: number
+                    format: float
+                    minimum: 0
+                    maximum: 1
+
+  /suggestions/learning:
+    get:
+      tags:
+        - Suggestions
+      summary: Get personalized learning recommendations
+      description: Tailored learning content based on user profile
+      operationId: getLearningSuggestions
+      parameters:
+        - name: user_id
+          in: query
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 10
+            maximum: 50
+      responses:
+        '200':
+          description: Learning recommendations
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  recommendations:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/LearningRecommendation'
+                  user_level:
+                    type: string
+                  streak_days:
+                    type: integer
+
+  # ==================================================
+  # ANOMALY DETECTION ENDPOINTS
+  # ==================================================
+
+  /anomalies/scan:
+    post:
+      tags:
+        - Anomaly Detection
+      summary: Trigger anomaly scan
+      description: Initiate infrastructure-wide anomaly detection
+      operationId: scanAnomalies
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                device_ids:
+                  type: array
+                  items:
+                    type: string
+                    format: uuid
+                  description: Specific devices to scan (optional)
+                severity_threshold:
+                  type: number
+                  minimum: 0
+                  maximum: 1
+                  default: 0.5
+                scan_types:
+                  type: array
+                  items:
+                    type: string
+                    enum: [traffic, temperature, power, storage, performance]
+      responses:
+        '202':
+          description: Scan initiated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  scan_id:
+                    type: string
+                    format: uuid
+                  status:
+                    type: string
+                    enum: [pending, running, completed, failed]
+                  estimated_completion:
+                    type: string
+                    format: date-time
+
+  /anomalies:
+    get:
+      tags:
+        - Anomaly Detection
+      summary: Get detected anomalies
+      description: Retrieve list of detected anomalies
+      operationId: getAnomalies
+      parameters:
+        - name: severity
+          in: query
+          schema:
+            type: string
+            enum: [low, medium, high, critical]
+        - name: device_id
+          in: query
+          schema:
+            type: string
+            format: uuid
+        - name: status
+          in: query
+          schema:
+            type: string
+            enum: [open, acknowledged, resolved]
+            default: open
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 50
+            maximum: 200
+        - name: offset
+          in: query
+          schema:
+            type: integer
+            default: 0
+      responses:
+        '200':
+          description: Anomalies retrieved
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  anomalies:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Anomaly'
+                  total:
+                    type: integer
+                  summary:
+                    type: object
+                    properties:
+                      by_severity:
+                        type: object
+                        properties:
+                          low:
+                            type: integer
+                          medium:
+                            type: integer
+                          high:
+                            type: integer
+                          critical:
+                            type: integer
+
+  /anomalies/{anomaly_id}:
+    get:
+      tags:
+        - Anomaly Detection
+      summary: Get anomaly details
+      description: Retrieve detailed information about a specific anomaly
+      operationId: getAnomalyDetails
+      parameters:
+        - name: anomaly_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Anomaly details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AnomalyDetail'
+
+    post:
+      tags:
+        - Anomaly Detection
+      summary: Acknowledge anomaly
+      description: Mark an anomaly as acknowledged or resolved
+      operationId: acknowledgeAnomaly
+      parameters:
+        - name: anomaly_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                action:
+                  type: string
+                  enum: [acknowledge, resolve, false_positive]
+                notes:
+                  type: string
+                assignee:
+                  type: string
+      responses:
+        '200':
+          description: Anomaly acknowledged
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                  updated_at:
+                    type: string
+                    format: date-time
+
+  # ==================================================
+  # PREDICTIVE ANALYTICS ENDPOINTS
+  # ==================================================
+
+  /predict/{device_id}:
+    get:
+      tags:
+        - Predictive Analytics
+      summary: Get predictions for device
+      description: Generate predictions for device capacity, failures, etc.
+      operationId: getDevicePredictions
+      parameters:
+        - name: device_id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: horizon
+          in: query
+          schema:
+            type: integer
+            default: 30
+            minimum: 1
+            maximum: 365
+          description: Prediction horizon in days
+        - name: metric
+          in: query
+          schema:
+            type: string
+            enum: [all, cpu, memory, storage, temperature, power, network]
+      responses:
+        '200':
+          description: Predictions retrieved
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  device_id:
+                    type: string
+                    format: uuid
+                  predictions:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Prediction'
+                  confidence:
+                    type: number
+                    format: float
+                  recommendations:
+                    type: array
+                    items:
+                      type: string
+
+  /predict/capacity:
+    get:
+      tags:
+        - Predictive Analytics
+      summary: Get capacity planning predictions
+      description: Infrastructure-wide capacity predictions
+      operationId: getCapacityPredictions
+      parameters:
+        - name: site_id
+          in: query
+          schema:
+            type: string
+            format: uuid
+          description: Filter by site (optional)
+        - name: horizon
+          in: query
+          schema:
+            type: integer
+            default: 90
+            minimum: 30
+            maximum: 365
+      responses:
+        '200':
+          description: Capacity predictions
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  predictions:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/CapacityPrediction'
+                  summary:
+                    type: object
+                    properties:
+                      critical_thresholds:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            resource:
+                              type: string
+                            date:
+                              type: string
+                              format: date
+                            threshold:
+                              type: number
+                      cost_impact:
+                        type: object
+                        properties:
+                          additional_cost:
+                            type: number
+                          avoided_cost:
+                            type: number
+
+  # ==================================================
+  # NATURAL LANGUAGE QUERY ENDPOINTS
+  # ==================================================
+
+  /query:
+    post:
+      tags:
+        - Natural Language Query
+      summary: Execute natural language query
+      description: Query NetBox using natural language
+      operationId: executeNLQuery
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                query:
+                  type: string
+                  description: Natural language query
+                format:
+                  type: string
+                  enum: [table, json, csv, report]
+                  default: table
+                include_metadata:
+                  type: boolean
+                  default: true
+      responses:
+        '200':
+          description: Query executed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  query:
+                    type: string
+                  results:
+                    type: array
+                    items:
+                      type: object
+                  metadata:
+                    type: object
+                    properties:
+                      query_time_ms:
+                        type: number
+                      records_count:
+                        type: integer
+                      confidence:
+                        type: number
+
+  # ==================================================
+  # CODE GENERATION ENDPOINTS
+  # ==================================================
+
+  /code/generate:
+    post:
+      tags:
+        - Code Generation
+      summary: Generate code
+      description: Generate code based on requirements
+      operationId: generateCode
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                language:
+                  type: string
+                  enum: [python, bash, terraform, ansible, powershell, sql]
+                  description: Target programming language
+                framework:
+                  type: string
+                  enum: [netbox-api, netbox-cli, rest-api, graphql]
+                requirements:
+                  type: string
+                  description: Description of what the code should do
+                context:
+                  type: object
+                  description: Additional context (existing code, schemas, etc.)
+      responses:
+        '200':
+          description: Code generated
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  code:
+                    type: string
+                  language:
+                    type: string
+                  explanations:
+                    type: array
+                    items:
+                      type: string
+                  examples:
+                    type: array
+                    items:
+                      type: string
+                  related_functions:
+                    type: array
+                    items:
+                      type: string
+
+# ==================================================
+# SCHEMAS
+# ==================================================
+
+components:
+  schemas:
+    ChatMessage:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        role:
+          type: string
+          enum: [user, assistant, system]
+        content:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+        attachments:
+          type: array
+          items:
+            type: string
+            format: uri
+
+    ChatMessageRequest:
+      type: object
+      required:
+        - message
+      properties:
+        message:
+          type: string
+          description: User message
+          minLength: 1
+          maxLength: 4000
+        language:
+          type: string
+          enum: [pt-BR, es-ES, en-US]
+          default: en-US
+        context:
+          type: object
+          properties:
+            page:
+              type: string
+            selected_object:
+              type: string
+            filters:
+              type: object
+        include_sources:
+          type: boolean
+          default: true
+
+    ChatMessageResponse:
+      type: object
+      properties:
+        response:
+          type: string
+        sources:
+          type: array
+          items:
+            type: object
+            properties:
+              title:
+                type: string
+              url:
+                type: string
+                format: uri
+              relevance:
+                type: number
+                format: float
+        suggestions:
+          type: array
+          items:
+            type: string
+        confidence:
+          type: number
+          format: float
+        conversation_id:
+          type: string
+          format: uuid
+
+    SearchResult:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        title:
+          type: string
+        content:
+          type: string
+        type:
+          type: string
+          enum: [documentation, video, code, forum, tutorial]
+        url:
+          type: string
+          format: uri
+        score:
+          type: number
+          format: float
+          minimum: 0
+          maximum: 1
+        metadata:
+          type: object
+          properties:
+            language:
+              type: string
+            difficulty:
+              type: string
+              duration:
+                type: integer
+              rating:
+                type: number
+            views:
+              type: integer
+            tags:
+              type: array
+              items:
+                type: string
+
+    DeviceSuggestion:
+      type: object
+      properties:
+        type:
+          type: string
+          enum: [component, configuration, maintenance, capacity]
+        title:
+          type: string
+        description:
+          type: string
+        priority:
+          type: string
+          enum: [low, medium, high, critical]
+        action:
+          type: string
+        estimated_impact:
+          type: object
+        confidence:
+          type: number
+          format: float
+
+    LearningRecommendation:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        title:
+          type: string
+        description:
+          type: string
+        type:
+          type: string
+          enum: [tutorial, quiz, lab, article, video]
+        difficulty:
+          type: string
+        estimated_duration:
+          type: integer
+          description: Duration in minutes
+        url:
+          type: string
+          format: uri
+        relevance_score:
+          type: number
+          format: float
+
+    Anomaly:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        device_id:
+          type: string
+          format: uuid
+        device_name:
+          type: string
+        type:
+          type: string
+          enum: [traffic, temperature, power, storage, performance]
+        severity:
+          type: string
+          enum: [low, medium, high, critical]
+        description:
+          type: string
+        detected_at:
+          type: string
+          format: date-time
+        status:
+          type: string
+          enum: [open, acknowledged, resolved]
+        probability:
+          type: number
+          format: float
+        metric_value:
+          type: number
+        threshold:
+          type: number
+        deviation:
+          type: number
+          format: float
+
+    AnomalyDetail:
+      allOf:
+        - $ref: '#/components/schemas/Anomaly'
+        - type: object
+          properties:
+            historical_data:
+              type: array
+              items:
+                type: object
+                properties:
+                  timestamp:
+                    type: string
+                    format: date-time
+                  value:
+                    type: number
+            probable_causes:
+              type: array
+              items:
+                type: string
+            recommended_actions:
+              type: array
+              items:
+                type: string
+            related_anomalies:
+              type: array
+              items:
+                type: string
+                format: uuid
+
+    Prediction:
+      type: object
+      properties:
+        metric:
+          type: string
+        date:
+          type: string
+          format: date
+        predicted_value:
+          type: number
+        confidence_interval:
+          type: object
+          properties:
+            lower:
+              type: number
+            upper:
+              type: number
+        probability_threshold_exceeded:
+          type: boolean
+        risk_level:
+          type: string
+          enum: [low, medium, high]
+
+    CapacityPrediction:
+      type: object
+      properties:
+        resource_type:
+          type: string
+          enum: [rack_space, power, cooling, storage, bandwidth]
+        site_id:
+          type: string
+          format: uuid
+        site_name:
+          type: string
+        predictions:
+          type: array
+          items:
+            $ref: '#/components/schemas/Prediction'
+
+  responses:
+    BadRequest:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+              message:
+                type: string
+              details:
+                type: object
+
+    Unauthorized:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+                example: Unauthorized
+              message:
+                type: string
+                example: Invalid authentication token
+
+    RateLimit:
+      description: Rate limit exceeded
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: string
+              message:
+                type: string
+              retry_after:
+                type: integer
+                description: Seconds to wait before retrying
+
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key

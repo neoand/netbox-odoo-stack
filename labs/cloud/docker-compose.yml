@@ -1,0 +1,207 @@
+version: '3.8'
+
+services:
+  # AWS Simulator
+  aws-simulator:
+    image: local/aws-simulator:latest
+    container_name: aws-simulator
+    restart: unless-stopped
+    ports:
+      - "8087:8087"
+    build:
+      context: ./simulators/aws
+      dockerfile: Dockerfile
+    volumes:
+      - ./terraform:/app/terraform
+    networks:
+      - cloud-net
+
+  # Azure Portal Simulator
+  azure-portal:
+    image: local/azure-portal:latest
+    container_name: azure-portal
+    restart: unless-stopped
+    ports:
+      - "8088:8088"
+    build:
+      context: ./simulators/azure
+      dockerfile: Dockerfile
+    networks:
+      - cloud-net
+
+  # GCP Console Simulator
+  gcp-console:
+    image: local/gcp-console:latest
+    container_name: gcp-console
+    restart: unless-stopped
+    ports:
+      - "8089:8089"
+    build:
+      context: ./simulators/gcp
+      dockerfile: Dockerfile
+    networks:
+      - cloud-net
+
+  # Kubernetes Cluster
+  kubernetes:
+    image: docker.io/kindest/node:latest
+    container_name: kubernetes-cluster
+    restart: unless-stopped
+    ports:
+      - "6443:6443"
+    environment:
+      - TZ=America/Sao_Paulo
+    privileged: true
+    volumes:
+      - kubernetes-data:/var/lib/kubernetes
+    networks:
+      - cloud-net
+    command: ["kubelet"]
+
+  # Jenkins CI/CD
+  jenkins:
+    image: jenkins/jenkins:lts
+    container_name: jenkins-ci
+    restart: unless-stopped
+    ports:
+      - "8090:8080"
+    environment:
+      - TZ=America/Sao_Paulo
+    volumes:
+      - jenkins-data:/var/jenkins_home
+      - ./pipelines:/var/jenkins_home/pipelines
+    networks:
+      - cloud-net
+
+  # Terraform
+  terraform:
+    image: hashicorp/terraform:latest
+    container_name: terraform-cli
+    restart: unless-stopped
+    volumes:
+      - ./terraform:/app
+      - terraform-state:/app/state
+    working_dir: /app
+    networks:
+      - cloud-net
+
+  # Helm
+  helm:
+    image: alpine/helm:latest
+    container_name: helm-cli
+    restart: unless-stopped
+    volumes:
+      - ./helm-charts:/charts
+      - kubeconfig:/root/.kube
+    command: ["sleep", "infinity"]
+    networks:
+      - cloud-net
+
+  # Prometheus for Cloud Metrics
+  prometheus-cloud:
+    image: prom/prometheus:latest
+    container_name: prometheus-cloud
+    restart: unless-stopped
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus-cloud-data:/prometheus
+    networks:
+      - cloud-net
+
+  # Grafana for Cloud Dashboards
+  grafana-cloud:
+    image: grafana/grafana:latest
+    container_name: grafana-cloud
+    restart: unless-stopped
+    ports:
+      - "3003:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin123
+    volumes:
+      - grafana-cloud-data:/var/lib/grafana
+      - ./grafana/dashboards:/etc/grafana/provisioning/dashboards
+      - ./grafana/datasources:/etc/grafana/provisioning/datasources
+    networks:
+      - cloud-net
+    depends_on:
+      - prometheus-cloud
+
+  # InfluxDB for Time-Series
+  influxdb-cloud:
+    image: influxdb:2.7
+    container_name: influxdb-cloud
+    restart: unless-stopped
+    ports:
+      - "8086:8086"
+    environment:
+      - DOCKER_INFLUXDB_INIT_MODE=setup
+      - DOCKER_INFLUXDB_INIT_USERNAME=admin
+      - DOCKER_INFLUXDB_INIT_PASSWORD=admin123
+      - DOCKER_INFLUXDB_INIT_ORG=cloud-lab
+      - DOCKER_INFLUXDB_INIT_BUCKET=cloud_metrics
+      - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=cloud-token
+    volumes:
+      - influxdb-cloud-data:/var/lib/influxdb2
+    networks:
+      - cloud-net
+
+  # Cloud Resource Simulator
+  cloud-simulator:
+    image: python:3.11-slim
+    container_name: cloud-resource-simulator
+    restart: unless-stopped
+    ports:
+      - "8091:8091"
+    volumes:
+      - ./simulators/resources:/app
+    command: python /app/cloud-simulator.py
+    networks:
+      - cloud-net
+
+  # LocalStack for AWS Local Development
+  localstack:
+    image: localstack/localstack:latest
+    container_name: localstack-aws
+    restart: unless-stopped
+    ports:
+      - "4566:4566"
+      - "4510-4559:4510-4559"
+    environment:
+      - SERVICES=s3,ec2,iam,lambda,eks,ecs
+      - DEBUG=1
+      - DATA_DIR=/tmp/localstack/data
+      - DOCKER_HOST=unix:///var/run/docker.sock
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock"
+      - localstack-data:/tmp/localstack
+    networks:
+      - cloud-net
+
+  # CloudWatch Simulator
+  cloudwatch:
+    image: python:3.11-slim
+    container_name: cloudwatch-simulator
+    restart: unless-stopped
+    ports:
+      - "8092:8092"
+    volumes:
+      - ./simulators/cloudwatch:/app
+    command: python /app/cloudwatch-simulator.py
+    networks:
+      - cloud-net
+
+volumes:
+  kubernetes-data:
+  jenkins-data:
+  terraform-state:
+  kubeconfig:
+  prometheus-cloud-data:
+  grafana-cloud-data:
+  influxdb-cloud-data:
+  localstack-data:
+
+networks:
+  cloud-net:
+    driver: bridge

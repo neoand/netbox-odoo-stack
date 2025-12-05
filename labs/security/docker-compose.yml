@@ -1,0 +1,177 @@
+version: '3.8'
+
+services:
+  # NetBox with Security Data
+  netbox:
+    image: netboxcommunity/netbox:v4.0.4
+    container_name: netbox-security
+    restart: unless-stopped
+    ports:
+      - "8010:8080"
+    environment:
+      - NETBOX_DB_NAME=netbox
+      - NETBOX_DB_USER=netbox
+      - NETBOX_DB_PASSWORD=netbox123
+      - NETBOX_DB_HOST=netbox-db
+      - NETBOX_SECRET_KEY=secret-key-security-$(date +%s)
+    volumes:
+      - netbox-media:/opt/netbox/netbox/media
+      - netbox-reports:/opt/netbox/netbox/reports
+    depends_on:
+      - netbox-db
+    networks:
+      - security-net
+
+  netbox-db:
+    image: postgres:15-alpine
+    container_name: netbox-db-security
+    restart: unless-stopped
+    environment:
+      - POSTGRES_DB=netbox
+      - POSTGRES_USER=netbox
+      - POSTGRES_PASSWORD=netbox123
+    volumes:
+      - netbox-db-data:/var/lib/postgresql/data
+    networks:
+      - security-net
+
+  # OpenVAS Vulnerability Scanner
+  openvas:
+    image: mikesplain/openvas
+    container_name: openvas-scanner
+    restart: unless-stopped
+    ports:
+      - "9392:9392"
+    environment:
+      - OV_USER=admin
+      - OV_PASSWORD=admin
+    networks:
+      - security-net
+    volumes:
+      - openvas-data:/var/lib/openvas
+
+  # Wazuh SIEM Manager
+  wazuh-manager:
+    image: wazuh/wazuh-manager:4.7.2
+    container_name: wazuh-manager
+    restart: unless-stopped
+    ports:
+      - "1514:1514/udp"
+      - "1515:1515/tcp"
+      - "514:514/udp"
+      - "514:514/tcp"
+      - "5000:5000/tcp"
+    environment:
+      - TZ=America/Sao_Paulo
+    volumes:
+      - wazuh-data:/var/ossec/data
+      - wazuh-logs:/var/ossec/logs
+      - wazuh-integrations:/var/ossec/integrations
+    networks:
+      - security-net
+
+  # Elasticsearch for log storage
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.11.0
+    container_name: elasticsearch
+    restart: unless-stopped
+    ports:
+      - "9200:9200"
+    environment:
+      - discovery.type=single-node
+      - "ES_JAVA_OPTS=-Xms1g -Xmx1g"
+      - xpack.security.enabled=false
+    volumes:
+      - elasticsearch-data:/usr/share/elasticsearch/data
+    networks:
+      - security-net
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+
+  # Kibana for visualization
+  kibana:
+    image: docker.elastic.co/kibana/kibana:8.11.0
+    container_name: kibana
+    restart: unless-stopped
+    ports:
+      - "5601:5601"
+    environment:
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+    depends_on:
+      - elasticsearch
+    networks:
+      - security-net
+
+  # Wazuh Dashboard (Alternative to Kibana)
+  wazuh-dashboard:
+    image: wazuh/wazuh-dashboard:4.7.2
+    container_name: wazuh-dashboard
+    restart: unless-stopped
+    ports:
+      - "443:443"
+    environment:
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+      - ELASTICSEARCH_USERNAME=kibanaserver
+      - ELASTICSEARCH_PASSWORD=kibanaserver
+      - SERVER_NAME=wazuh-dashboard
+    volumes:
+      - wazuh-wdashboard:/usr/share/wazuh-dashboard/data
+    networks:
+      - security-net
+    depends_on:
+      - elasticsearch
+
+  # Nessus (Demo/Community Edition)
+  nessus:
+    image: tenableofficial/nessus:latest
+    container_name: nessus
+    restart: unless-stopped
+    ports:
+      - "8834:8834"
+    environment:
+      - ACTIVATION_CODE=${NESSUS_ACTIVATION_CODE:-demo}
+    networks:
+      - security-net
+
+  # Suricata IDS/IPS
+  suricata:
+    image: jasonish/suricata:latest
+    container_name: suricata
+    restart: unless-stopped
+    ports:
+      - "9001:9001"
+    environment:
+      - INTERFACE=eth0
+      - TZ=America/Sao_Paulo
+    networks:
+      - security-net
+    privileged: true
+
+  # Security Dashboard
+  security-dashboard:
+    image: prom/prometheus:latest
+    container_name: security-metrics
+    restart: unless-stopped
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    networks:
+      - security-net
+
+volumes:
+  netbox-media:
+  netbox-reports:
+  netbox-db-data:
+  openvas-data:
+  wazuh-data:
+  wazuh-logs:
+  wazuh-integrations:
+  wazuh-wdashboard:
+  elasticsearch-data:
+
+networks:
+  security-net:
+    driver: bridge

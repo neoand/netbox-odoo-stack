@@ -1,0 +1,203 @@
+version: '3.8'
+
+services:
+  # NetBox IoT Edition
+  netbox-iot:
+    image: netboxcommunity/netbox:v4.0.4
+    container_name: netbox-iot
+    restart: unless-stopped
+    ports:
+      - "8020:8080"
+    environment:
+      - NETBOX_DB_NAME=netbox_iot
+      - NETBOX_DB_USER=netbox
+      - NETBOX_DB_PASSWORD=netbox123
+      - NETBOX_DB_HOST=netbox-db-iot
+      - NETBOX_SECRET_KEY=secret-key-iot-$(date +%s)
+    volumes:
+      - netbox-iot-media:/opt/netbox/netbox/media
+      - netbox-iot-reports:/opt/netbox/netbox/reports
+    depends_on:
+      - netbox-db-iot
+    networks:
+      - iot-net
+
+  netbox-db-iot:
+    image: postgres:15-alpine
+    container_name: netbox-db-iot
+    restart: unless-stopped
+    environment:
+      - POSTGRES_DB=netbox_iot
+      - POSTGRES_USER=netbox
+      - POSTGRES_PASSWORD=netbox123
+    volumes:
+      - netbox-iot-db:/var/lib/postgresql/data
+    networks:
+      - iot-net
+
+  # MQTT Broker
+  mosquitto:
+    image: eclipse-mosquitto:latest
+    container_name: mosquitto-mqtt
+    restart: unless-stopped
+    ports:
+      - "1883:1883"
+      - "9001:9001"
+    volumes:
+      - ./config/mosquitto.conf:/mosquitto/config/mosquitto.conf
+    networks:
+      - iot-net
+
+  # Node-RED
+  nodered:
+    image: nodered/node-red:latest
+    container_name: nodered-iot
+    restart: unless-stopped
+    ports:
+      - "1880:1880"
+    environment:
+      - TZ=America/Sao_Paulo
+    volumes:
+      - nodered-data:/data
+    networks:
+      - iot-net
+
+  # InfluxDB for Time-Series Data
+  influxdb:
+    image: influxdb:2.7
+    container_name: influxdb-iot
+    restart: unless-stopped
+    ports:
+      - "8086:8086"
+    environment:
+      - DOCKER_INFLUXDB_INIT_MODE=setup
+      - DOCKER_INFLUXDB_INIT_USERNAME=admin
+      - DOCKER_INFLUXDB_INIT_PASSWORD=admin123
+      - DOCKER_INFLUXDB_INIT_ORG=neo-lab
+      - DOCKER_INFLUXDB_INIT_BUCKET=iot_data
+      - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=admin-token-iot
+    volumes:
+      - influxdb-iot-data:/var/lib/influxdb2
+    networks:
+      - iot-net
+
+  # Grafana for IoT Dashboards
+  grafana-iot:
+    image: grafana/grafana:latest
+    container_name: grafana-iot
+    restart: unless-stopped
+    ports:
+      - "3002:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin123
+      - GF_INSTALL_PLUGINS=volttronai-clock-dashboard
+    volumes:
+      - grafana-iot-data:/var/lib/grafana
+      - ./dashboards:/etc/grafana/provisioning/dashboards
+      - ./datasources:/etc/grafana/provisioning/datasources
+    networks:
+      - iot-net
+    depends_on:
+      - influxdb
+
+  # IoT Device Simulator
+  device-simulator:
+    image: python:3.11-slim
+    container_name: iot-device-simulator
+    restart: unless-stopped
+    ports:
+      - "8085:8085"
+    volumes:
+      - ./simulator:/app
+    command: python /app/iot-simulator.py
+    networks:
+      - iot-net
+    depends_on:
+      - mosquitto
+      - influxdb
+
+  # Wireshark for Protocol Analysis
+  wireshark:
+    image: lscr.io/linuxserver/wireshark:latest
+    container_name: wireshark
+    restart: unless-stopped
+    ports:
+      - "3001:3000"
+    environment:
+      - TZ=America/Sao_Paulo
+    cap_add:
+      - NET_ADMIN
+    networks:
+      - iot-net
+
+  # Elastic for Log Analysis
+  elasticsearch-iot:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.11.0
+    container_name: elasticsearch-iot
+    restart: unless-stopped
+    ports:
+      - "9201:9200"
+    environment:
+      - discovery.type=single-node
+      - "ES_JAVA_OPTS=-Xms1g -Xmx1g"
+      - xpack.security.enabled=false
+    volumes:
+      - elasticsearch-iot-data:/usr/share/elasticsearch/data
+    networks:
+      - iot-net
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+
+  # Kibana for IoT Visualization
+  kibana-iot:
+    image: docker.elastic.co/kibana/kibana:8.11.0
+    container_name: kibana-iot
+    restart: unless-stopped
+    ports:
+      - "5602:5601"
+    environment:
+      - ELASTICSEARCH_HOSTS=http://elasticsearch-iot:9200
+    depends_on:
+      - elasticsearch-iot
+    networks:
+      - iot-net
+
+  # PLC Simulator
+  plc-simulator:
+    image: python:3.11-slim
+    container_name: plc-simulator
+    restart: unless-stopped
+    ports:
+      - "2000:2000"
+    volumes:
+      - ./plc-sim:/app
+    command: python /app/plc-simulator.py
+    networks:
+      - iot-net
+
+  # IoT Security Scanner
+  iot-scanner:
+    image: owasp/nikto
+    container_name: iot-scanner
+    restart: unless-stopped
+    ports:
+      - "8086:8086"
+    volumes:
+      - ./scans:/var/log/nikto
+    networks:
+      - iot-net
+
+volumes:
+  netbox-iot-media:
+  netbox-iot-reports:
+  netbox-iot-db:
+  nodered-data:
+  influxdb-iot-data:
+  grafana-iot-data:
+  elasticsearch-iot-data:
+
+networks:
+  iot-net:
+    driver: bridge
