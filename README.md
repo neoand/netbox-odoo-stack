@@ -74,6 +74,18 @@
 | - Mapa de Racks | Visualização 3D | ✅ Incluído |
 | - Sync Offline | Service Workers | ✅ Incluído |
 
+### 🌟 **Recursos da Comunidade NetBox**
+
+| Recurso | Conteúdo | Para Quem |
+|---------|----------|-----------|
+| **[Device Type Library](../community/)** | 500+ device types pré-configurados | Todos |
+| **[Awesome NetBox](../community/awesome-netbox/)** | Lista curada de 100+ plugins | DevOps |
+| **[Plugins da Comunidade](../community/docs/plugins.md)** | Documents, Inventory, Golden Config | Avançados |
+| **[Templates de Configuração](../community/docs/templates.md)** | Jinja2 automação completa | Especialistas |
+| **[Exemplos Práticos](../community/docs/examples.md)** | 5 casos reais com ROI | Gestores |
+
+**📦 Community Directory:** `community/` - Recursos completos da comunidade NetBox
+
 ---
 
 ## 🚀 **Como Usar a Documentação**
@@ -140,14 +152,17 @@
 
 | Métrica | Valor |
 |---------|-------|
-| **Páginas totais** | 22 |
-| **Linhas de código** | 4.000+ |
-| **Casos de uso** | 5 completos |
+| **Páginas totais** | 35+ |
+| **Linhas de código** | 8.000+ |
+| **Casos de uso** | 10 completos |
 | **Histórias reais** | 4 |
 | **PWA exemplos** | 5 apps |
 | **Compliance regras** | 18 |
-| **ROI calculados** | 5 casos |
-| **Idiomas** | PT (completo) + ES (básico) |
+| **ROI calculados** | 8 casos |
+| **Idiomas** | PT (completo) + ES (completo) |
+| **Community device types** | 500+ |
+| **Community plugins** | 100+ |
+| **Config templates** | 20+ |
 
 ---
 
@@ -310,11 +325,27 @@ netbox-odoo-stack/
 │   │   ├── dev/                 # Dev & Operação
 │   │   ├── integrations/        # Integrações
 │   │   └── troubleshooting/     # Solução de Problemas
-│   └── es/                      # Español (básico)
-│       ├── integrations/
-│       ├── dev/
-│       ├── learning/
+│   └── es/                      # Español (completo)
+│       ├── historias/           # Histórias traduzidas
+│       ├── learning/            # Aprendizado traduzido
+│       ├── casos-uso/           # Casos de uso traduzidos
+│       ├── dev/                 # Dev & Operação
 │       └── ...
+├── community/                   # 🌟 Recurso da Comunidade NetBox
+│   ├── README.md                # Guia principal
+│   ├── devicetype-library/      # 500+ device types
+│   ├── awesome-netbox/          # Lista de plugins
+│   ├── netbox-documents/        # Plugin documentos
+│   ├── netbox-inventory/        # Plugin inventário
+│   ├── plugin-template/         # Template para plugins
+│   └── docs/                    # Documentação completa
+│       ├── overview.md
+│       ├── device-types.md
+│       ├── plugins.md
+│       ├── templates.md
+│       ├── examples.md
+│       └── device-types/
+│           └── import-guide.md
 └── MELHORIAS-IMPLEMENTADAS.md   # Detalhamento das melhorias
 ```
 
