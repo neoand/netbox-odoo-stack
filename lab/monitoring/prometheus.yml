@@ -1,0 +1,58 @@
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+rule_files:
+  # - "first_rules.yml"
+  # - "second_rules.yml"
+
+scrape_configs:
+  # Prometheus self-monitoring
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
+
+  # NetBox metrics
+  - job_name: 'netbox'
+    static_configs:
+      - targets: ['netbox:8080']
+    metrics_path: '/api/metrics'
+    scrape_interval: 30s
+
+  # neo_stack metrics
+  - job_name: 'neo-stack'
+    static_configs:
+      - targets: ['neo-stack:3000']
+    metrics_path: '/metrics'
+    scrape_interval: 15s
+
+  # PostgreSQL metrics
+  - job_name: 'postgres'
+    static_configs:
+      - targets: ['postgres:5432']
+    scrape_interval: 30s
+
+  # Redis metrics
+  - job_name: 'redis'
+    static_configs:
+      - targets: ['redis:6379']
+    scrape_interval: 15s
+
+  # Odoo metrics (if available)
+  - job_name: 'odoo'
+    static_configs:
+      - targets: ['odoo:8069']
+    metrics_path: '/metrics'
+    scrape_interval: 60s
+
+  # Docker daemon metrics
+  - job_name: 'docker'
+    static_configs:
+      - targets: ['host.docker.internal:9323']
+    scrape_interval: 30s
+
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets:
+          # - alertmanager:9093

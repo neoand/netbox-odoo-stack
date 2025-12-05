@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎭 Arquitetura 3D - NetBox + Odoo + neo_stack</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            color: white;
+            overflow: hidden;
+        }
+
+        #canvas-container {
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+        }
+
+        #info-panel {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 20px;
+            border-radius: 15px;
+            max-width: 350px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            display: none;
+            z-index: 100;
+        }
+
+        #info-panel h3 {
+            color: #00d4ff;
+            margin-bottom: 10px;
+            font-size: 20px;
+        }
+
+        #info-panel p {
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 8px;
+        }
+
+        #info-panel .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+            padding: 5px;
+        }
+
+        #controls {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.8);
+            padding: 15px 25px;
+            border-radius: 30px;
+            display: flex;
+            gap: 15px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        #controls button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+            font-size: 12px;
+        }
+
+        #controls button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        #controls button.active {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+
+        #title {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            text-align: center;
+            z-index: 10;
+        }
+
+        #title h1 {
+            font-size: 32px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 5px;
+        }
+
+        #title p {
+            font-size: 14px;
+            color: #a0a0a0;
+        }
+
+        #stats {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 20px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        #stats h3 {
+            color: #00d4ff;
+            margin-bottom: 15px;
+            font-size: 16px;
+        }
+
+        #stats .stat-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-size: 13px;
+        }
+
+        #stats .stat-label {
+            color: #a0a0a0;
+        }
+
+        #stats .stat-value {
+            color: #00ff88;
+            font-weight: bold;
+        }
+
+        .tooltip {
+            position: absolute;
+            background: rgba(0, 0, 0, 0.9);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 5px;
+            font-size: 12px;
+            pointer-events: none;
+            z-index: 1000;
+            display: none;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.5;
+            }
+        }
+
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+    </style>
+</head>
+<body>
+    <div id="canvas-container"></div>
+
+    <div id="title">
+        <h1>🎭 Arquitetura Mágica 3D</h1>
+        <p>NetBox + Odoo + neo_stack | Clique nos componentes para explorar</p>
+    </div>
+
+    <div id="info-panel">
+        <button class="close-btn" onclick="hideInfo()">✕</button>
+        <h3 id="component-name">Componente</h3>
+        <p id="component-description"></p>
+        <p><strong>Função:</strong> <span id="component-function"></span></p>
+        <p><strong>Porta:</strong> <span id="component-port"></span></p>
+        <p><strong>Tecnologia:</strong> <span id="component-tech"></span></p>
+    </div>
+
+    <div id="stats">
+        <h3>📊 Métricas em Tempo Real</h3>
+        <div class="stat-item">
+            <span class="stat-label">Dispositivos:</span>
+            <span class="stat-value">2,547</span>
+        </div>
+        <div class="stat-item">
+            <span class="stat-label">IPs Gerenciados:</span>
+            <span class="stat-value">15,892</span>
+        </div>
+        <div class="stat-item">
+            <span class="stat-label">VLANs:</span>
+            <span class="stat-value">234</span>
+        </div>
+        <div class="stat-item">
+            <span class="stat-label">Compliance:</span>
+            <span class="stat-value">98.7%</span>
+        </div>
+        <div class="stat-item">
+            <span class="stat-label">Uptime:</span>
+            <span class="stat-value">99.99%</span>
+        </div>
+    </div>
+
+    <div id="controls">
+        <button onclick="showView('overview')" class="active">Visão Geral</button>
+        <button onclick="showView('netbox')">NetBox</button>
+        <button onclick="showView('odoo')">Odoo</button>
+        <button onclick="showView('neostack')">neo_stack</button>
+        <button onclick="showView('flow')">Fluxo de Dados</button>
+    </div>
+
+    <div class="tooltip" id="tooltip"></div>
+
+    <script type="importmap">
+    {
+        "imports": {
+            "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+            "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+        }
+    }
+    </script>
+
+    <script type="module">
+        import * as THREE from 'three';
+        import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+        // Scene setup
+        const scene = new THREE.Scene();
+        scene.background = new THREE.Color(0x0a0a1a);
+        scene.fog = new THREE.Fog(0x0a0a1a, 20, 50);
+
+        const camera = new THREE.PerspectiveCamera(
+            75,
+            window.innerWidth / window.innerHeight,
+            0.1,
+            1000
+        );
+        camera.position.set(15, 10, 15);
+
+        const renderer = new THREE.WebGLRenderer({ antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(window.devicePixelRatio);
+        document.getElementById('canvas-container').appendChild(renderer.domElement);
+
+        // Controls
+        const controls = new OrbitControls(camera, renderer.domElement);
+        controls.enableDamping = true;
+        controls.dampingFactor = 0.05;
+
+        // Lights
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+        scene.add(ambientLight);
+
+        const directionalLight = new THREE.DirectionalLight(0x00d4ff, 1);
+        directionalLight.position.set(10, 20, 10);
+        scene.add(directionalLight);
+
+        const pointLight = new THREE.PointLight(0xff00ff, 1, 50);
+        pointLight.position.set(-10, 5, -10);
+        scene.add(pointLight);
+
+        // Components data
+        const components = {
+            netbox: {
+                name: 'NetBox',
+                description: 'CMDB e IPAM - Fonte única da verdade para infraestrutura',
+                function: 'Gerenciar dispositivos, IPs, VLANs, racks e sites',
+                port: '8000',
+                tech: 'Django + PostgreSQL + Python',
+                color: 0x3498db,
+                position: { x: -8, y: 0, z: 0 }
+            },
+            odoo: {
+                name: 'Odoo ERP',
+                description: 'Sistema ERP completo para gestão empresarial',
+                function: 'Gestão de inventário, ordens de serviço e financeiro',
+                port: '8069',
+                tech: 'Python + XML-RPC + PostgreSQL',
+                color: 0x2ecc71,
+                position: { x: 8, y: 0, z: 0 }
+            },
+            neostack: {
+                name: 'neo_stack',
+                description: 'Framework Full-Stack para aplicações modernas',
+                function: 'Dashboard PWA, APIs e integração entre sistemas',
+                port: '3000',
+                tech: 'Nuxt.js + FastAPI + PostgreSQL',
+                color: 0x9b59b6,
+                position: { x: 0, y: 0, z: -8 }
+            },
+            database: {
+                name: 'PostgreSQL',
+                description: 'Base de dados relacional principal',
+                function: 'Armazenar dados de todos os sistemas',
+                port: '5432',
+                tech: 'PostgreSQL 15',
+                color: 0xe74c3c,
+                position: { x: 0, y: -5, z: 0 }
+            },
+            redis: {
+                name: 'Redis',
+                description: 'Cache e message broker',
+                function: 'Cache e fila de mensagens para performance',
+                port: '6379',
+                tech: 'Redis 7',
+                color: 0xf39c12,
+                position: { x: 0, y: 5, z: 0 }
+            }
+        };
+
+        // Create components
+        const componentMeshes = {};
+        const raycaster = new THREE.Raycaster();
+        const mouse = new THREE.Vector2();
+
+        function createComponent(key, component) {
+            // Main sphere
+            const geometry = new THREE.SphereGeometry(1.5, 32, 32);
+            const material = new THREE.MeshPhongMaterial({
+                color: component.color,
+                shininess: 100,
+                emissive: component.color,
+                emissiveIntensity: 0.2
+            });
+            const mesh = new THREE.Mesh(geometry, material);
+            mesh.position.set(
+                component.position.x,
+                component.position.y,
+                component.position.z
+            );
+            mesh.userData = { key, component };
+            scene.add(mesh);
+            componentMeshes[key] = mesh;
+
+            // Glow effect
+            const glowGeometry = new THREE.SphereGeometry(1.8, 32, 32);
+            const glowMaterial = new THREE.MeshBasicMaterial({
+                color: component.color,
+                transparent: true,
+                opacity: 0.3
+            });
+            const glow = new THREE.Mesh(glowGeometry, glowMaterial);
+            mesh.add(glow);
+
+            // Text label
+            const canvas = document.createElement('canvas');
+            const context = canvas.getContext('2d');
+            canvas.width = 512;
+            canvas.height = 256;
+            context.fillStyle = 'rgba(0, 0, 0, 0.8)';
+            context.fillRect(0, 0, canvas.width, canvas.height);
+            context.font = 'bold 48px Arial';
+            context.fillStyle = '#ffffff';
+            context.textAlign = 'center';
+            context.fillText(component.name, canvas.width / 2, canvas.height / 2);
+
+            const texture = new THREE.CanvasTexture(canvas);
+            const textMaterial = new THREE.SpriteMaterial({ map: texture });
+            const textSprite = new THREE.Sprite(textMaterial);
+            textSprite.scale.set(4, 2, 1);
+            textSprite.position.set(0, 2.5, 0);
+            mesh.add(textSprite);
+
+            // Connections
+            createConnections(mesh, key);
+        }
+
+        function createConnections(mesh, key) {
+            const connections = {
+                netbox: ['neostack', 'database'],
+                odoo: ['neostack', 'database'],
+                neostack: ['netbox', 'odoo', 'database', 'redis'],
+                database: ['netbox', 'odoo', 'neostack'],
+                redis: ['neostack']
+            };
+
+            const targetKeys = connections[key] || [];
+            targetKeys.forEach(targetKey => {
+                const targetMesh = componentMeshes[targetKey];
+                if (targetMesh) {
+                    const material = new THREE.LineBasicMaterial({
+                        color: 0x00ffff,
+                        transparent: true,
+                        opacity: 0.3
+                    });
+
+                    const points = [
+                        new THREE.Vector3().copy(mesh.position),
+                        new THREE.Vector3().copy(targetMesh.position)
+                    ];
+
+                    const geometry = new THREE.BufferGeometry().setFromPoints(points);
+                    const line = new THREE.Line(geometry, material);
+                    scene.add(line);
+
+                    // Animated data flow
+                    animateDataFlow(points[0], points[1], components[key].color);
+                }
+            });
+        }
+
+        function animateDataFlow(start, end, color) {
+            const geometry = new THREE.SphereGeometry(0.1, 8, 8);
+            const material = new THREE.MeshBasicMaterial({ color });
+            const particle = new THREE.Mesh(geometry, material);
+
+            const duration = 2000;
+            const startTime = Date.now();
+
+            function update() {
+                const elapsed = Date.now() - startTime;
+                const progress = (elapsed % duration) / duration;
+
+                particle.position.lerpVectors(start, end, progress);
+                scene.add(particle);
+
+                requestAnimationFrame(update);
+            }
+
+            update();
+        }
+
+        // Create all components
+        Object.keys(components).forEach(key => {
+            createComponent(key, components[key]);
+        });
+
+        // Data flow particles
+        const particles = [];
+        function createDataFlow() {
+            const geometry = new THREE.SphereGeometry(0.05, 8, 8);
+            const colors = [0x00ffff, 0xff00ff, 0xffff00, 0x00ff00];
+
+            for (let i = 0; i < 50; i++) {
+                const material = new THREE.MeshBasicMaterial({
+                    color: colors[Math.floor(Math.random() * colors.length)]
+                });
+                const particle = new THREE.Mesh(geometry, material);
+
+                const start = new THREE.Vector3(
+                    Math.random() * 20 - 10,
+                    Math.random() * 20 - 10,
+                    Math.random() * 20 - 10
+                );
+
+                const end = new THREE.Vector3(
+                    Math.random() * 20 - 10,
+                    Math.random() * 20 - 10,
+                    Math.random() * 20 - 10
+                );
+
+                particle.userData = { start, end, progress: Math.random() };
+                scene.add(particle);
+                particles.push(particle);
+            }
+        }
+
+        createDataFlow();
+
+        // Views
+        function showView(view) {
+            const buttons = document.querySelectorAll('#controls button');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+
+            const views = {
+                overview: {
+                    pos: { x: 15, y: 10, z: 15 },
+                    target: { x: 0, y: 0, z: 0 }
+                },
+                netbox: {
+                    pos: { x: -5, y: 3, z: 5 },
+                    target: components.netbox.position
+                },
+                odoo: {
+                    pos: { x: 5, y: 3, z: 5 },
+                    target: components.odoo.position
+                },
+                neostack: {
+                    pos: { x: 3, y: 3, z: -3 },
+                    target: components.neostack.position
+                },
+                flow: {
+                    pos: { x: 0, y: 15, z: 15 },
+                    target: { x: 0, y: 0, z: 0 }
+                }
+            };
+
+            if (views[view]) {
+                animateCamera(views[view].pos, views[view].target);
+            }
+        }
+
+        function animateCamera(targetPos, targetLook) {
+            const duration = 1000;
+            const startPos = camera.position.clone();
+            const startTarget = controls.target.clone();
+
+            const startTime = Date.now();
+
+            function update() {
+                const elapsed = Date.now() - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                const eased = 1 - Math.pow(1 - progress, 3);
+
+                camera.position.lerpVectors(startPos, targetPos, eased);
+                controls.target.lerpVectors(startTarget, targetLook, eased);
+
+                if (progress < 1) {
+                    requestAnimationFrame(update);
+                }
+            }
+
+            update();
+        }
+
+        // Mouse interaction
+        function onMouseMove(event) {
+            mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+            mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+            raycaster.setFromCamera(mouse, camera);
+            const intersects = raycaster.intersectObjects(Object.values(componentMeshes));
+
+            if (intersects.length > 0) {
+                const mesh = intersects[0].object;
+                const { key, component } = mesh.userData;
+
+                showTooltip(event.clientX, event.clientY, component.name);
+            } else {
+                hideTooltip();
+            }
+        }
+
+        function onClick(event) {
+            mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+            mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+            raycaster.setFromCamera(mouse, camera);
+            const intersects = raycaster.intersectObjects(Object.values(componentMeshes));
+
+            if (intersects.length > 0) {
+                const mesh = intersects[0].object;
+                const { component } = mesh.userData;
+                showInfo(component);
+            }
+        }
+
+        function showTooltip(x, y, text) {
+            const tooltip = document.getElementById('tooltip');
+            tooltip.style.display = 'block';
+            tooltip.style.left = x + 10 + 'px';
+            tooltip.style.top = y + 10 + 'px';
+            tooltip.textContent = text;
+        }
+
+        function hideTooltip() {
+            document.getElementById('tooltip').style.display = 'none';
+        }
+
+        function showInfo(component) {
+            document.getElementById('component-name').textContent = component.name;
+            document.getElementById('component-description').textContent = component.description;
+            document.getElementById('component-function').textContent = component.function;
+            document.getElementById('component-port').textContent = component.port;
+            document.getElementById('component-tech').textContent = component.tech;
+            document.getElementById('info-panel').style.display = 'block';
+        }
+
+        function hideInfo() {
+            document.getElementById('info-panel').style.display = 'none';
+        }
+
+        window.addEventListener('mousemove', onMouseMove);
+        window.addEventListener('click', onClick);
+
+        // Animation loop
+        function animate() {
+            requestAnimationFrame(animate);
+
+            // Rotate particles
+            particles.forEach(particle => {
+                particle.userData.progress += 0.005;
+                if (particle.userData.progress > 1) {
+                    particle.userData.progress = 0;
+                }
+
+                const start = particle.userData.start;
+                const end = particle.userData.end;
+                particle.position.lerpVectors(start, end, particle.userData.progress);
+            });
+
+            // Animate components
+            Object.values(componentMeshes).forEach((mesh, index) => {
+                mesh.rotation.y += 0.005;
+                mesh.position.y += Math.sin(Date.now() * 0.001 + index) * 0.01;
+            });
+
+            controls.update();
+            renderer.render(scene, camera);
+        }
+
+        animate();
+
+        // Handle resize
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+        // Initial camera animation
+        setTimeout(() => {
+            showView('overview');
+        }, 1000);
+    </script>
+</body>
+</html>
