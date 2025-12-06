@@ -172,6 +172,157 @@ nb-cli prefix available 192.168.0.0/24 | grep "available"
 
 ---
 
+## 📦 **Inventario**
+
+```bash
+# Componentes
+nb-cli component list
+nb-cli inventory-item list
+
+# Inventario
+nb-cli inventory-item add \
+  --device="Switch-Core-01" \
+  --name="Módulo de Memoria" \
+  --serial="MEM123"
+```
+
+---
+
+## 🔐 **Usuarios & Permisos**
+
+```bash
+# Usuarios
+nb-cli user list
+nb-cli user add --username="jose.garcia"
+
+# Grupos
+nb-cli group list
+nb-cli group create --name="Admins-Red"
+```
+
+---
+
+## ⚙️ **Configuraciones**
+
+```bash
+# Config
+nb-cli config list
+nb-cli config get
+
+# Secrets
+nb-cli secret list
+nb-cli secret add --name="SNMP-Community"
+
+# Campos Personalizados
+nb-cli custom-field list
+nb-cli custom-field create \
+  --name="warranty_end_date" \
+  --type="date"
+```
+
+---
+
+## 📈 **Estado & Salud**
+
+```bash
+# Estadísticas
+nb-cli stats
+nb-cli dashboard
+
+# Ping/Conectividad
+nb-cli ping 192.168.1.1
+nb-cli check interface "GigabitEthernet0/1"
+```
+
+---
+
+## 🎯 **Scripts Útiles**
+
+### **Agregar 100 dispositivos**
+```bash
+#!/bin/bash
+for i in {1..100}; do
+  nb-cli device add --name="Switch-$i"
+  echo "Creado Switch-$i"
+done
+```
+
+### **Encontrar IPs no utilizadas**
+```bash
+nb-cli prefix available 192.168.0.0/24 | grep "available"
+```
+
+### **Exportar lista de dispositivos**
+```bash
+nb-cli device list --format json | jq '.[] | {name, status, site}' > devices.json
+```
+
+---
+
+## 📚 **Ejemplos Completos**
+
+### **Crear Rack completo**
+```bash
+# 1. Sitio
+nb-cli site add "Centro de Datos A"
+
+# 2. Rack
+nb-cli rack add --site="Centro de Datos A" --name="RACK-A01"
+
+# 3. Switch
+nb-cli device create \
+  --name="Core-SW-01" \
+  --device_type="Cisco Catalyst 2960X" \
+  --site="Centro de Datos A" \
+  --rack="RACK-A01" \
+  --position=1
+
+# 4. Interfaz
+nb-cli interface add --device="Core-SW-01" --name="GigabitEthernet0/1"
+
+# 5. IP
+nb-cli ip add 192.168.1.1/24 --interface="GigabitEthernet0/1"
+
+# 6. VLAN
+nb-cli vlan add --vid=100 --name="GESTION" --site="Centro de Datos A"
+```
+
+---
+
+## ⚠️ **Comandos Peligrosos**
+
+```bash
+# ¡CUIDADO! Borra todo
+nb-cli delete --all
+
+# ¡CUIDADO! Forzar borrado
+nb-cli device delete --force 1
+
+# ¡CUIDADO! Modifica en lote
+nb-cli device update --all --status=offline
+```
+
+---
+
+## 🆘 **Ayuda Rápida**
+
+```bash
+# Ayuda general
+nb-cli --help
+
+# Ayuda por comando
+nb-cli device --help
+nb-cli device add --help
+
+# Versión
+nb-cli --version
+
+# Debug
+nb-cli --debug device list
+```
+
+---
+
 ## 📝 **Aliases Útiles**
 
 ```bash
@@ -184,6 +335,22 @@ alias nbv='nb-cli vlan list'
 # Usar
 nbs  # Lista dispositivos
 nbss # Lista sitios
+```
+
+---
+
+## 💾 **Exportar/Importar**
+
+```bash
+# Backup
+nb-cli export json > netbox-$(date +%Y%m%d).json
+
+# Restaurar
+nb-cli import json < netbox-20241204.json
+
+# CSV
+nb-cli device list --format csv > devices.csv
+nb-cli import csv --file devices.csv
 ```
 
 ---

@@ -1,89 +1,400 @@
-site_name: "netbox-odoo-stack Docs"
-site_description: "Documentação PT/ES de integração NetBox + Odoo + neo_stack"
+site_name: "NEO_NETBOX_ODOO_STACK v2.0"
+site_description: "Plataforma integrada CMDB + SIEM + ERP: NetBox 4.2 + Wazuh 4.12 + Odoo 19 + OCA"
 site_url: ""
+repo_url: "https://github.com/seu-org/neo_netbox_odoo_stack"
+repo_name: "neo_netbox_odoo_stack"
+
 theme:
   name: material
   language: pt
+  palette:
+    - scheme: default
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-7
+        name: Mudar para modo escuro
+    - scheme: slate
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-4
+        name: Mudar para modo claro
   features:
     - navigation.tabs
+    - navigation.tabs.sticky
     - navigation.sections
+    - navigation.expand
+    - navigation.path
+    - navigation.top
+    - navigation.indexes
     - content.code.copy
+    - content.code.annotate
     - content.tabs.link
     - search.highlight
     - search.suggest
-extra_css: []
+    - search.share
+    - toc.follow
+  icon:
+    repo: fontawesome/brands/github
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/seu-org/neo_netbox_odoo_stack
+  alternate:
+    - name: Português
+      link: /pt/
+      lang: pt
+    - name: Español
+      link: /es/
+      lang: es
+
 markdown_extensions:
   - admonition
-  - toc:
-      permalink: true
-  - tables
+  - abbr
+  - attr_list
   - def_list
   - footnotes
-  - codehilite
+  - md_in_html
+  - toc:
+      permalink: true
+      toc_depth: 3
+  - tables
   - pymdownx.details
-  - pymdownx.superfences
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
   - pymdownx.tabbed:
       alternate_style: true
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.critic
+  - pymdownx.caret
+  - pymdownx.keys
+  - pymdownx.mark
+  - pymdownx.tilde
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  - pymdownx.tasklist:
+      custom_checkbox: true
+
 plugins:
-  - search
+  - search:
+      lang:
+        - pt
+        - es
+        - en
+  - tags
+
 nav:
-  - PT:
-      - Visão geral: docs/pt/overview.md
-      - Setup: docs/pt/setup.md
-      - Arquitetura: docs/pt/architecture.md
-      - Histórias & Casos Reais:
-          - Histórias de Dor: docs/pt/historias/dores-reais.md
-          - PWAs para Time de Campo: docs/pt/historias/pwas-campo.md
-      - Aprendizado:
-          - Primeiros Passos: docs/pt/learning/primeiros-passos.md
-          - Glossário Interativo: docs/pt/learning/glossario.md
-          - Trilha de aprendizado: docs/pt/learning/roadmap.md
-      - Casos de Uso:
-          - Gerenciamento de IPs: docs/pt/casos-uso/gerenciamento-ips.md
-          - Drift Detection: docs/pt/casos-uso/drift-detection.md
-          - Pipelines de Provisionamento: docs/pt/casos-uso/provisionamento.md
-          - Compliance e Auditoria: docs/pt/casos-uso/compliance.md
-          - Neo Stack Framework: docs/pt/casos-uso/neo-stack-framework.md
+  # ==================== PORTUGUÊS ====================
+  - "🇧🇷 Português":
+    - Início: docs/pt/README.md
+    - Visão Geral: docs/pt/overview.md
+    - Setup: docs/pt/setup.md
+    - Arquitetura: docs/pt/architecture.md
+
+    # Histórias e Casos Reais
+    - Histórias:
+      - Histórias de Dor: docs/pt/historias/dores-reais.md
+      - PWAs para Campo: docs/pt/historias/pwas-campo.md
+
+    # Aprendizado
+    - Aprendizado:
+      - Primeiros Passos: docs/pt/learning/primeiros-passos.md
+      - Glossário: docs/pt/learning/glossario.md
+      - Trilha de Aprendizado: docs/pt/learning/roadmap.md
+
+    # Casos de Uso
+    - Casos de Uso:
+      - Gerenciamento de IPs: docs/pt/casos-uso/gerenciamento-ips.md
+      - Drift Detection: docs/pt/casos-uso/drift-detection.md
+      - Provisionamento: docs/pt/casos-uso/provisionamento.md
+      - Compliance: docs/pt/casos-uso/compliance.md
+      - Neo Stack Framework: docs/pt/casos-uso/neo-stack-framework.md
+
+    # Odoo + OCA
+    - Odoo + OCA:
+      - Visão Geral: docs/pt/odoo-oca/index.md
+      - Helpdesk: docs/pt/odoo-oca/helpdesk.md
+      - Project: docs/pt/odoo-oca/project.md
+      - REST Framework: docs/pt/odoo-oca/rest-framework.md
+      - Reporting Engine: docs/pt/odoo-oca/reporting-engine.md
+      - Server UX: docs/pt/odoo-oca/server-ux.md
+      - Stock Logistics: docs/pt/odoo-oca/stock-logistics.md
+      - Maintenance: docs/pt/odoo-oca/maintenance.md
+      - Agreement: docs/pt/odoo-oca/agreement.md
+
+    # Wazuh SIEM
+    - Wazuh SIEM:
+      - Índice: docs/pt/wazuh/INDEX.md
+      - Introdução: docs/pt/wazuh/introduction.md
+      - Features: docs/pt/wazuh/features.md
+      - Use Cases: docs/pt/wazuh/use-cases.md
+      - Regras Customizadas: docs/pt/wazuh/rules/custom-rules.md
       - Integrações:
-          - NetBox + Odoo: docs/pt/integrations/netbox-odoo.md
-          - NetBox + neo_stack: docs/pt/integrations/netbox-neo_stack.md
-      - Dev & Operação:
-          - Guia de APIs: docs/pt/dev/api-guide.md
-          - Guia Dev & Operação: docs/pt/dev/guia-dev.md
-          - Troubleshooting Devs: docs/pt/troubleshooting-devs.md
-      - Playbooks: docs/pt/playbooks/operacao.md
-      - Troubleshooting: docs/pt/troubleshooting.md
-  - ES:
-      - Visión general: docs/es/overview.md
-      - Setup: docs/es/setup.md
-      - Arquitectura: docs/es/architecture.md
-      - Historias & Casos Reales:
-          - Historias de Dolor: docs/es/historias/dolores-reales.md
-          - PWAs para Equipo de Campo: docs/es/historias/pwas-campo.md
-      - Aprendizaje:
-          - Primeros Pasos: docs/es/learning/primeros-pasos.md
-          - Glosario Interactivo: docs/es/learning/glosario.md
-          - Ruta de aprendizaje: docs/es/learning/roadmap.md
-      - Casos de Uso:
-          - Gestión de IPs: docs/es/casos-uso/gerenciamento-ips.md
-          - Detección de Drift: docs/es/casos-uso/drift-detection.md
-          - Pipelines de Provisionamiento: docs/es/casos-uso/provisionamiento.md
-          - Compliance y Auditoría: docs/es/casos-uso/compliance.md
-          - Neo Stack Framework: docs/es/casos-uso/neo-stack-framework.md
+        - Stack: docs/pt/wazuh/integrations/stack.md
+        - Shuffle: docs/pt/wazuh/integrations/shuffle.md
+        - n8n: docs/pt/wazuh/integrations/n8n.md
+        - Odoo: docs/pt/wazuh/integrations/odoo.md
+      - Comunidade: docs/pt/wazuh/community/README.md
+      - Mobile: docs/pt/wazuh/mobile-development/README.md
+      - Changelog: docs/pt/wazuh/CHANGELOG_v2.0.md
+
+    # Integrações
+    - Integrações:
+      - Visão Geral: docs/pt/integrations/index.md
+      - NetBox ↔ Odoo: docs/pt/integrations/netbox-odoo.md
+      - NetBox ↔ Wazuh: docs/pt/integrations/netbox-wazuh.md
+      - Wazuh ↔ Odoo: docs/pt/integrations/wazuh-odoo.md
+      - NetBox ↔ neo_stack: docs/pt/integrations/netbox-neo_stack.md
+
+    # SOAR
+    - SOAR:
+      - Visão Geral: docs/pt/soar/index.md
+      - Shuffle:
+        - Introdução: docs/pt/soar/shuffle/index.md
+        - Setup: docs/pt/soar/shuffle/setup.md
+        - Integração Wazuh: docs/pt/soar/shuffle/wazuh-integration.md
+        - Workflows: docs/pt/soar/shuffle/workflows.md
+      - n8n:
+        - Introdução: docs/pt/soar/n8n/index.md
+        - Setup: docs/pt/soar/n8n/setup.md
+        - Integração Wazuh: docs/pt/soar/n8n/wazuh-integration.md
+        - Workflows: docs/pt/soar/n8n/workflows.md
+      - Playbooks:
+        - Catálogo: docs/pt/soar/playbooks/index.md
+        - Malware Response: docs/pt/soar/playbooks/malware-response.md
+        - Brute Force: docs/pt/soar/playbooks/brute-force.md
+        - Compliance: docs/pt/soar/playbooks/compliance.md
+
+    # Implementação
+    - Guia de Implementação:
+      - Introdução: docs/pt/implementation-guide/README.md
+      - Business Case: docs/pt/implementation-guide/business-case.md
+      - Fase 01 - Planejamento: docs/pt/implementation-guide/phase-01-planning.md
+      - Roadmap: docs/pt/implementation-guide/roadmap.md
+
+    # Dev & Operação
+    - Dev & Operação:
+      - Guia de APIs: docs/pt/dev/api-guide.md
+      - API Reference: docs/pt/dev/api-reference.md
+      - Guia Dev: docs/pt/dev/guia-dev.md
+
+    # Playbooks
+    - Playbooks Operacionais: docs/pt/playbooks/operacao.md
+
+    # Quick References
+    - Quick References:
+      - Índice: docs/pt/quick-refs/README.md
+      - API Endpoints: docs/pt/quick-refs/api-endpoints.md
+      - Docker Commands: docs/pt/quick-refs/docker-commands.md
+      - NetBox CLI: docs/pt/quick-refs/netbox-cli.md
+      - Odoo Integration: docs/pt/quick-refs/odoo-integration.md
+      - Python Scripts: docs/pt/quick-refs/python-scripts.md
+
+    # Expansão Avançada
+    - Expansão Avançada:
+      - Visão Geral: docs/pt/advanced-expansion/README.md
+      - TheHive:
+        - Introdução: docs/pt/advanced-expansion/thehive/index.md
+        - Setup: docs/pt/advanced-expansion/thehive/setup.md
+        - Gestão de Casos: docs/pt/advanced-expansion/thehive/cases-management.md
+        - Integração Shuffle: docs/pt/advanced-expansion/thehive/integration-shuffle.md
+        - Integração Stack: docs/pt/advanced-expansion/thehive/integration-stack.md
+        - Casos de Uso: docs/pt/advanced-expansion/thehive/use-cases.md
+        - API Reference: docs/pt/advanced-expansion/thehive/api-reference.md
+      - MISP:
+        - Introdução: docs/pt/advanced-expansion/misp/index.md
+        - Setup: docs/pt/advanced-expansion/misp/setup.md
+        - Threat Intelligence: docs/pt/advanced-expansion/misp/threat-intelligence.md
+        - Compartilhamento: docs/pt/advanced-expansion/misp/sharing.md
+        - Integração Stack: docs/pt/advanced-expansion/misp/integration-stack.md
+        - Casos de Uso: docs/pt/advanced-expansion/misp/use-cases.md
+        - API Reference: docs/pt/advanced-expansion/misp/api-reference.md
+      - Cortex:
+        - Introdução: docs/pt/advanced-expansion/cortex/index.md
+        - Setup: docs/pt/advanced-expansion/cortex/setup.md
+        - Analyzers: docs/pt/advanced-expansion/cortex/analyzers.md
+        - Responders: docs/pt/advanced-expansion/cortex/responders.md
+        - Integração TheHive: docs/pt/advanced-expansion/cortex/integration-thehive.md
+        - Integração Stack: docs/pt/advanced-expansion/cortex/integration-stack.md
+        - Casos de Uso: docs/pt/advanced-expansion/cortex/use-cases.md
+      - Monitoramento:
+        - Visão Geral: docs/pt/advanced-expansion/monitoring/index.md
+        - Zabbix: docs/pt/advanced-expansion/monitoring/zabbix-setup.md
+        - Prometheus: docs/pt/advanced-expansion/monitoring/prometheus-setup.md
+        - Grafana: docs/pt/advanced-expansion/monitoring/grafana-dashboards.md
+        - Alertas: docs/pt/advanced-expansion/monitoring/alerting.md
+        - Monitorando Stack: docs/pt/advanced-expansion/monitoring/monitoring-stack.md
+      - Elastic/OpenSearch:
+        - Introdução: docs/pt/advanced-expansion/elastic/index.md
+
+    # Troubleshooting
+    - Troubleshooting:
+      - Geral: docs/pt/troubleshooting.md
+      - Desenvolvedores: docs/pt/troubleshooting-devs.md
+
+  # ==================== ESPAÑOL ====================
+  - "🇲🇽 Español":
+    - Inicio: docs/es/README.md
+    - Visión General: docs/es/overview.md
+    - Setup: docs/es/setup.md
+    - Arquitectura: docs/es/architecture.md
+
+    # Historias y Casos Reales
+    - Historias:
+      - Historias de Dolor: docs/es/historias/dolores-reales.md
+      - PWAs para Campo: docs/es/historias/pwas-campo.md
+
+    # Aprendizaje
+    - Aprendizaje:
+      - Primeros Pasos: docs/es/learning/primeros-pasos.md
+      - Glosario: docs/es/learning/glosario.md
+      - Ruta de Aprendizaje: docs/es/learning/roadmap.md
+
+    # Casos de Uso
+    - Casos de Uso:
+      - Gestión de IPs: docs/es/casos-uso/gerenciamento-ips.md
+      - Detección de Drift: docs/es/casos-uso/drift-detection.md
+      - Provisionamiento: docs/es/casos-uso/provisionamiento.md
+      - Compliance: docs/es/casos-uso/compliance.md
+      - Neo Stack Framework: docs/es/casos-uso/neo-stack-framework.md
+
+    # Odoo + OCA
+    - Odoo + OCA:
+      - Visión General: docs/es/odoo-oca/index.md
+      - Helpdesk: docs/es/odoo-oca/helpdesk.md
+      - Project: docs/es/odoo-oca/project.md
+      - REST Framework: docs/es/odoo-oca/rest-framework.md
+      - Reporting Engine: docs/es/odoo-oca/reporting-engine.md
+      - Server UX: docs/es/odoo-oca/server-ux.md
+      - Stock Logistics: docs/es/odoo-oca/stock-logistics.md
+      - Maintenance: docs/es/odoo-oca/maintenance.md
+      - Agreement: docs/es/odoo-oca/agreement.md
+
+    # Wazuh SIEM
+    - Wazuh SIEM:
+      - Índice: docs/es/wazuh/INDEX.md
+      - Introducción: docs/es/wazuh/introduction.md
+      - Features: docs/es/wazuh/features.md
+      - Casos de Uso: docs/es/wazuh/use-cases.md
+      - Reglas Personalizadas: docs/es/wazuh/rules/custom-rules.md
       - Integraciones:
-          - NetBox + Odoo: docs/es/integrations/netbox-odoo.md
-          - NetBox + neo_stack: docs/es/integrations/netbox-neo_stack.md
-      - Dev y Operación:
-          - Guía de APIs: docs/es/dev/api-guide.md
-          - Guía Dev & Operación: docs/es/dev/guia-dev.md
-          - Troubleshooting Devs: docs/es/troubleshooting-devs.md
-      - Playbooks: docs/es/playbooks/operacion.md
-      - Troubleshooting: docs/es/troubleshooting.md
-  - Comunidad:
-      - Recursos de la Comunidad: community/docs/es/overview.md
-      - Device Types:
-          - Guía de Device Types: community/docs/device-types.md
-          - Guía de Importación: community/docs/es/device-types/import-guide.md
-      - Plugins: community/docs/plugins.md
-      - Templates: community/docs/templates.md
-      - Ejemplos Reales: community/docs/examples.md
+        - Shuffle: docs/es/wazuh/integrations/shuffle.md
+        - n8n: docs/es/wazuh/integrations/n8n.md
+        - Odoo: docs/es/wazuh/integrations/odoo.md
+
+    # Integraciones
+    - Integraciones:
+      - Visión General: docs/es/integrations/index.md
+      - NetBox ↔ Odoo: docs/es/integrations/netbox-odoo.md
+      - NetBox ↔ Wazuh: docs/es/integrations/netbox-wazuh.md
+      - Wazuh ↔ Odoo: docs/es/integrations/wazuh-odoo.md
+      - NetBox ↔ neo_stack: docs/es/integrations/netbox-neo_stack.md
+
+    # SOAR
+    - SOAR:
+      - Visión General: docs/es/soar/index.md
+      - Shuffle:
+        - Introducción: docs/es/soar/shuffle/index.md
+        - Setup: docs/es/soar/shuffle/setup.md
+        - Integración Wazuh: docs/es/soar/shuffle/wazuh-integration.md
+        - Workflows: docs/es/soar/shuffle/workflows.md
+      - n8n:
+        - Introducción: docs/es/soar/n8n/index.md
+        - Setup: docs/es/soar/n8n/setup.md
+        - Integración Wazuh: docs/es/soar/n8n/wazuh-integration.md
+        - Workflows: docs/es/soar/n8n/workflows.md
+      - Playbooks:
+        - Catálogo: docs/es/soar/playbooks/index.md
+        - Malware Response: docs/es/soar/playbooks/malware-response.md
+        - Brute Force: docs/es/soar/playbooks/brute-force.md
+        - Compliance: docs/es/soar/playbooks/compliance.md
+
+    # Implementación
+    - Guía de Implementación:
+      - Introducción: docs/es/implementation-guide/README.md
+      - Business Case: docs/es/implementation-guide/business-case.md
+      - Fase 01 - Planificación: docs/es/implementation-guide/phase-01-planning.md
+      - Roadmap: docs/es/implementation-guide/roadmap.md
+
+    # Dev y Operación
+    - Dev y Operación:
+      - Guía de APIs: docs/es/dev/api-guide.md
+      - Guía Dev: docs/es/dev/guia-dev.md
+
+    # Playbooks
+    - Playbooks Operacionales: docs/es/playbooks/operacion.md
+
+    # Quick References
+    - Quick References:
+      - Índice: docs/es/quick-refs/README.md
+      - API Endpoints: docs/es/quick-refs/api-endpoints.md
+      - Docker Commands: docs/es/quick-refs/docker-commands.md
+      - NetBox CLI: docs/es/quick-refs/netbox-cli.md
+      - Odoo Integration: docs/es/quick-refs/odoo-integration.md
+      - Python Scripts: docs/es/quick-refs/python-scripts.md
+
+    # Expansión Avanzada
+    - Expansión Avanzada:
+      - Visión General: docs/es/advanced-expansion/README.md
+      - TheHive:
+        - Introducción: docs/es/advanced-expansion/thehive/index.md
+        - Setup: docs/es/advanced-expansion/thehive/setup.md
+        - Gestión de Casos: docs/es/advanced-expansion/thehive/cases-management.md
+        - Integración Shuffle: docs/es/advanced-expansion/thehive/integration-shuffle.md
+        - Integración Stack: docs/es/advanced-expansion/thehive/integration-stack.md
+        - Casos de Uso: docs/es/advanced-expansion/thehive/use-cases.md
+        - API Reference: docs/es/advanced-expansion/thehive/api-reference.md
+      - MISP:
+        - Introducción: docs/es/advanced-expansion/misp/index.md
+        - Setup: docs/es/advanced-expansion/misp/setup.md
+        - Threat Intelligence: docs/es/advanced-expansion/misp/threat-intelligence.md
+        - Compartir: docs/es/advanced-expansion/misp/sharing.md
+        - Integración Stack: docs/es/advanced-expansion/misp/integration-stack.md
+        - Casos de Uso: docs/es/advanced-expansion/misp/use-cases.md
+        - API Reference: docs/es/advanced-expansion/misp/api-reference.md
+      - Cortex:
+        - Introducción: docs/es/advanced-expansion/cortex/index.md
+        - Setup: docs/es/advanced-expansion/cortex/setup.md
+        - Analyzers: docs/es/advanced-expansion/cortex/analyzers.md
+        - Responders: docs/es/advanced-expansion/cortex/responders.md
+        - Integración TheHive: docs/es/advanced-expansion/cortex/integration-thehive.md
+        - Integración Stack: docs/es/advanced-expansion/cortex/integration-stack.md
+        - Casos de Uso: docs/es/advanced-expansion/cortex/use-cases.md
+      - Monitoreo:
+        - Visión General: docs/es/advanced-expansion/monitoring/index.md
+        - Zabbix: docs/es/advanced-expansion/monitoring/zabbix-setup.md
+        - Prometheus: docs/es/advanced-expansion/monitoring/prometheus-setup.md
+        - Grafana: docs/es/advanced-expansion/monitoring/grafana-dashboards.md
+        - Alertas: docs/es/advanced-expansion/monitoring/alerting.md
+        - Monitoreando Stack: docs/es/advanced-expansion/monitoring/monitoring-stack.md
+      - Elastic/OpenSearch:
+        - Introducción: docs/es/advanced-expansion/elastic/index.md
+
+    # Troubleshooting
+    - Troubleshooting:
+      - General: docs/es/troubleshooting.md
+      - Desarrolladores: docs/es/troubleshooting-devs.md
+
+  # ==================== AI CONTEXT ====================
+  - "🤖 AI Context":
+    - AI Context: AI_CONTEXT.md
+    - Claude Guide: CLAUDE.md
+
+  # ==================== COMUNIDADE ====================
+  - "👥 Comunidade":
+    - Recursos: community/docs/overview.md
+    - Device Types: community/docs/device-types.md
+    - Plugins: community/docs/plugins.md
+    - Templates: community/docs/templates.md
+    - Exemplos: community/docs/examples.md

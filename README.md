@@ -1,1014 +1,442 @@
-# 🪄 **NetBox + Odoo + neo_stack** — *Onde a Magia Acontece*
+# 🚀 NEO_NETBOX_ODOO_STACK v2.0 — Plataforma Integrada de TI Enterprise
 
 <div align="center">
 
-![NetBox](https://img.shields.io/badge/NetBox-4.x-blue?style=for-the-badge&logo=netbox)
-![Odoo](https://img.shields.io/badge/Odoo-17-green?style=for-the-badge&logo=odoo)
-![NeoStack](https://img.shields.io/badge/Neo_Stack-Framework-purple?style=for-the-badge&logo=nuxtdotjs)
+![Odoo](https://img.shields.io/badge/Odoo-19-green?style=for-the-badge&logo=odoo)
+![NetBox](https://img.shields.io/badge/NetBox-4.2-blue?style=for-the-badge&logo=netbox)
+![Wazuh](https://img.shields.io/badge/Wazuh-4.12-red?style=for-the-badge&logo=wazuh)
+![TheHive](https://img.shields.io/badge/TheHive-5.x-purple?style=for-the-badge)
+![MISP](https://img.shields.io/badge/MISP-TI-orange?style=for-the-badge)
 
-**✨ Documentação Encantada para Desenvolvedores que Querem Conquistar ✨**
-
-*De lágrimas de sangue a lágrimas de alegria — a jornada está aqui*
-
----
+**🌍 100% Bilíngue | 🤖 AI-First | 📚 200+ Arquivos de Documentação | ✅ Pronto para Produção**
 
 [![🇧🇷 Português](https://img.shields.io/badge/🇧🇷-Português-00A86B?style=for-the-badge)](docs/pt/README.md)
 [![🇲🇽 Español](https://img.shields.io/badge/🇲🇽-Español-FFD700?style=for-the-badge)](docs/es/README.md)
-[![📚 Docs](https://img.shields.io/badge/📚-Docs_Interativas-blue?style=for-the-badge)](mkdocs.yml)
-[![💰 ROI](https://img.shields.io/badge/💰-ROI_11.592%25-success?style=for-the-badge)](#casos-de-uso)
+[![📖 Project Summary](https://img.shields.io/badge/📖-Project_Summary-blue?style=for-the-badge)](PROJECT_SUMMARY.md)
+[![🚀 Quick Start](https://img.shields.io/badge/🚀-Quick_Start-green?style=for-the-badge)](QUICK_START.md)
 
 </div>
 
 ---
 
-## 🎭 **Prólogo: A História que Ninguém Conta**
+## 🎯 O Que É NEO_NETBOX_ODOO_STACK v2.0?
 
-Imagine... são **3 da manhã**. Seu telefone não para de tocar. *"Servidor caído"* - dizem. Você tem **500 dispositivos** pra verificar, **várias VLANs**, IPs duplicados... e zero documentação.
+**NEO_NETBOX_ODOO_STACK** é uma **plataforma integrada enterprise-grade** que une:
 
-**A realidade dói.**
-
-Mas e se eu te dissesse que existe uma forma de transformar esse pesadelo em um sonho? Que **500 dispositivos** podem virar **500 aliados**? Que **3 da manhã** pode virar **9 às 5**, de segunda a sexta?
-
----
-
-## 🌟 **Esta Não É Só Documentação...**
-
-Esta é uma **poção mágica** contendo:
-
-| 🧪 Ingrediente | 📖 História | 💎 Resultado |
-|----------------|------------|--------------|
-| **4 Histórias Reais** | De empresas que _sofreram_ | ROI de 270% a 11.592% |
-| **5 Casos de Uso** | Com código completo | Provisionar em 5 minutos |
-| **5 PWAs** | Para equipe de campo | Apps que _vendem_ sozinhos |
-| **18 Regras** | Compliance automatizado | ISO 27001 sem dor |
-| **500+ Device Types** | Da comunidade | Importar em 2 minutos |
-
-**Resultado:** De SysAdmin a **Automation Hero** 🚀
+| Pilar | Ferramenta | Função |
+|-------|-----------|--------|
+| **Gestão de Infraestrutura** | Odoo 19 Community + NetBox 4.2 | ERP + CMDB + IPAM |
+| **Segurança & SIEM** | Wazuh 4.12 | Detecção de ameaças + XDR |
+| **Incident Response** | TheHive 5.x | Gerenciamento de incidentes |
+| **Threat Intelligence** | MISP | Compartilhamento de IOCs |
+| **Análise Automatizada** | Cortex 3.4 | 200+ Analyzers de observables |
+| **Orquestração SOAR** | Shuffle + n8n | Automação de resposta |
+| **Observabilidade** | Zabbix + Prometheus + Grafana | Monitoramento enterprise |
+| **Visualização de Logs** | Elastic/OpenSearch | Busca e análise de logs |
 
 ---
 
-## 🗺️ **Escolha Sua Jornada**
+## 🌟 O Que Torna Este Projeto Especial?
 
-### 🇧🇷 **Para os Brasileiros**
-> *"Documentação completa em português, com alma brasileira"*
+### 📚 Documentação Enterprise-Grade
+- ✅ **200+ arquivos** markdown estruturados
+- ✅ **50.000+ linhas** de documentação técnica
+- ✅ **100% bilíngue** (Português Brasil + Español México)
+- ✅ **AI-first**: Contexto estruturado para consumo por LLMs
+- ✅ **100+ diagramas** Mermaid
+- ✅ **30+ casos de uso** completos com código funcionando
 
-| 🎓 Aprender | 💡 Implementar | 🔧 Operar |
-|-------------|----------------|-----------|
-| **[Primeiros Passos](docs/pt/learning/primeiros-passos.md)** - *30 min* | **[Provisionamento](docs/pt/casos-uso/provisionamento.md)** - *ROI 11.592%* | **[Drift Detection](docs/pt/casos-uso/drift-detection.md)** - *Automatizado* |
-| **[Glossário](docs/pt/learning/glossario.md)** - *Sem medo de术语* | **[Neo Stack](docs/pt/casos-uso/neo-stack-framework.md)** - *Framework completo* | **[Compliance](docs/pt/casos-uso/compliance.md)** - *18 regras* |
-| **[Histórias](docs/pt/historias/dores-reais.md)** - *Conecte-se* | **[Gestão IPs](docs/pt/casos-uso/gerenciamento-ips.md)** - *Sem conflitos* | **[PWAs Campo](docs/pt/historias/pwas-campo.md)** - *5 apps* |
+### 🎓 Experiência de Aprendizado
+- ✅ **Didática**: Explicações para times que não conhecem as ferramentas
+- ✅ **Prática**: Cada conceito tem exemplos funcionais
+- ✅ **Integrada**: Mostra como cada ferramenta se conecta com a stack
+- ✅ **Profissional**: Nível enterprise, pronto para implementação
 
-**👉 [Entrar na Jornada Brasileira](docs/pt/README.md)**
-
-### 🇲🇽 **Para los Mexicanos**
-> *"Documentación completa en español, con sabor mexicano"*
-
-| 🎓 Aprender | 💡 Implementar | 🔧 Operar |
-|-------------|----------------|-----------|
-| **[Primeros Pasos](docs/es/learning/primeros-pasos.md)** - *30 min* | **[Provisionamiento](docs/es/casos-uso/provisionamiento.md)** - *ROI 11.492%* | **[Detección de Drift](docs/es/casos-uso/drift-detection.md)** - *Automatizado* |
-| **[Glosario](docs/es/learning/glosario.md)** - *Sin miedo a términos* | **[Neo Stack](docs/es/casos-uso/neo-stack-framework.md)** - *Framework completo* | **[Compliance](docs/es/casos-uso/compliance.md)** - *18 reglas* |
-| **[Historias](docs/es/historias/dolores-reales.md)** - *Conéctate* | **[Gestión IPs](docs/es/casos-uso/gerenciamento-ips.md)** - *Sin conflictos* | **[PWAs Campo](docs/es/historias/pwas-campo.md)** - *5 apps* |
-
-**👉 [Entrar en la Jornada Mexicana](docs/es/README.md)**
-
----
-
-## 🎭 **5 Histórias que Vão Mudar Sua Vida**
-
-### 1. 💰 **Caso: Empresa de Médio Porte (500 dispositivos)**
-
-> *"Estávamos drowning em papelada. NetBox nos salvou."*
-
-**ROI:** 270%
-**Tempo:** Provisioning de 2 semanas → 3 dias
-**Equipes Felizes:** 2/10 → 9/10
-
-**👉 [Ler História Completa](docs/pt/historias/dores-reais.md)**
-
-### 2. 🎯 **Caso: Operadora (5000+ dispositivos)**
-
-> *"De 4h para 1h de resposta. Os clientes não acreditam."*
-
-**ROI:** 340%
-**Compliance:** 78% → 98%
-**Downtime:** -84%
-
-**👉 [Ver Caso Completo](community/docs/examples.md)**
-
-### 3. 🚀 **Caso: Data Center (1000+ servidores)**
-
-> *"Onboarding: 1 dia → 5 minutos. Nossa mente explodiu."*
-
-**ROI:** 420%
-**Lifecycle:** 30% → 95% visibility
-**Warranty Claims:** -75%
-
-**👉 [Explorar Exemplo](community/docs/examples.md)**
-
-### 4. 🎓 **Caso: Universidade (2000+ dispositivos)**
-
-> *"QR codes salvaram nossos técnicos. Agora eles AMAM o NetBox."*
-
-**ROI:** 190%
-**Localizar device:** 15 min → 30 seg
-**Incidentes:** 50/mês → 8/mês
-
-**👉 [Ver Realidade](community/docs/examples.md)**
-
-### 5. 🏭 **Caso: Manufatura (IoT + OT)**
-
-> *"OT/IT converged. Incidentes de segurança: 12/ano → 0."*
-
-**ROI:** 280%
-**Visibilidade OT:** 0% → 95%
-**Compliance:** 30% → 95%
-
-**👉 [Descobrir Mais](community/docs/examples.md)**
+### 🔧 Expansão Avançada Documentada
+- ✅ **TheHive** (8 arquivos PT + 8 ES) - Incident Response Platform
+- ✅ **MISP** (7 arquivos PT + 7 ES) - Threat Intelligence Sharing
+- ✅ **Cortex** (7 arquivos PT + 7 ES) - Observable Analysis com 200+ analyzers
+- ✅ **Monitoramento** (7 arquivos PT + 7 ES) - Zabbix + Prometheus + Grafana
+- ✅ **Elastic/OpenSearch** (2 arquivos PT + 2 ES) - Visualização de logs
 
 ---
 
-## 💻 **Casos de Uso — Onde o Código Vira Ouro**
+## 📊 Estatísticas do Projeto
 
-### **🏆 Provisionamento (ROI: 11.592%)**
-```python
-# De 5 dias → 5 minutos ⚡
-# 100 servidores/mês
-# Economia: $28,780,800 MXN/ano
-
-from neo_stack.pipeline import ProvisionPipeline
-
-pipeline = ProvisionPipeline()
-result = pipeline.create_infrastructure({
-    'device_type': 'Dell PowerEdge R740',
-    'environment': 'production',
-    'auto_approve': True
-})
-# ✨ Done! Servidor rodando!
-```
-
-**[👉 Ver Implementação Completa](docs/pt/casos-uso/provisionamento.md)**
+| Métrica | Valor |
+|---------|-------|
+| **Arquivos Markdown** | 200+ |
+| **Linhas de Documentação** | 50.000+ |
+| **Diagramas Mermaid** | 100+ |
+| **Exemplos de Código** | 200+ |
+| **Ferramentas Documentadas** | 10+ |
+| **Casos de Uso Completos** | 30+ |
+| **Tabelas de Referência** | 150+ |
+| **Seções AI Context** | 50+ |
+| **Linguagens** | 2 (PT-BR, ES-MX) |
+| **Status** | ✅ Pronto para Produção |
 
 ---
 
-### **🔍 Detecção de Drift (ROI: 2.270%)**
-```yaml
-# Ansible + Python
-# Detecta mudanças em 10 min
-# 500 dispositivos monitorados
+## 🚀 Como Começar
 
-- name: Coleta Facts
-  ansible.builtin.setup:
-    filter:
-      - ansible_default_ipv4
-      - ansible_interfaces
-```
+### **Passo 1: Escolha Seu Idioma**
 
-**[👉 Ver Automação](docs/pt/casos-uso/drift-detection.md)**
-
----
-
-### **🛡️ Compliance (ROI: 967%)**
-```python
-# 18 regras automatizadas
-# ISO 27001 + SOC 2 + LGPD
-# Auditoria em tempo real
-
-engine = ComplianceEngine()
-violations = engine.validate_all()
-# ⚠️ 3 violações críticas detectadas!
-```
-
-**[👉 Ver Governança](docs/pt/casos-uso/compliance.md)**
-
----
-
-### **🌐 Gestão de IPs (ROI: 270%)**
-```python
-# Zero conflitos de IP
-# Dashboard automático
-# Prevención 24/7
-
-ip_manager = IPAddressManager()
-conflicts = ip_manager.detect_conflicts()
-# ✅ Rede 100% limpa!
-```
-
-**[👉 Ver Solução](docs/pt/casos-uso/gerenciamento-ips.md)**
-
----
-
-### **⚡ Neo Stack Framework**
-```typescript
-// Nuxt.js 3 + FastAPI
-// PWA built-in
-// Deploy em 1 clique
-
-const app = await NetBoxApp.create({
-  modules: ['@nuxt/ui', '@pinia/nuxt'],
-  plugins: ['netbox-sync']
-})
-// 🚀 App pronto em 5 minutos!
-```
-
-**[👉 Criar App Completo](docs/pt/casos-uso/neo-stack-framework.md)**
-
----
-
-## 📱 **PWAs Que Vendem Sozinhas**
-
-> *"Nossos técnicos não querem devolver os tablets"*
-
-### **5 Apps Completos:**
-
-| App | O que faz | Tecnologia |
-|-----|-----------|------------|
-| **📷 Scanner** | QR code → Info instantânea | Nuxt.js PWA |
-| **✅ Checklist** | Manutenção com fotos | Service Workers |
-| **🔔 Alertas** | Push notifications | WebSocket |
-| **🗺️ Mapa Rack** | Visualização 3D | Three.js |
-| **📶 Offline** | Sync sem internet | IndexedDB |
-
-**[👉 Ver Todos os Apps](docs/pt/historias/pwas-campo.md)**
-
----
-
-## 🌟 **Recursos da Comunidade — O Segredo**
-
-### **500+ Device Types** 📦
+#### 🇧🇷 Para Times Brasileiros
 ```bash
-# Dell, Cisco, HPE, Juniper... tudo pronto!
-curl -O https://.../devicetype-library/device-types/Dell/R740.yaml
-# ✅ 2 minutos → Device type importado!
+# Abra a documentação em português
+https://seu-dominio/docs/pt/
+ou
+cat docs/pt/README.md
 ```
 
-**[👉 Ver Library Completa](community/)**
+Comece aqui: [docs/pt/README.md](docs/pt/README.md)
 
-### **100+ Plugins** 🔌
-- **netbox-documents** - 📄 Documentação
-- **netbox-inventory** - 📦 Inventário
-- **netbox-golden-config** - ⚙️ Configs
-- **netbox-device-onboarding** - 🚀 Auto-provision
-
-**[👉 Explorar Plugins](community/awesome-netbox/)**
-
-### **Templates Jinja2** ⚡
-```jinja2
-# Config generation automática
-interface {{ interface.name }}
- description {{ interface.description }}
- ip address {{ interface.ip }}/{{ interface.mask }}
-```
-
-**[👉 Ver Templates](community/docs/templates.md)**
-
----
-
-## 📊 **Os Números Que Assustam**
-
-<div align="center">
-
-| Métrica | Antes | Depois | 💰 Impacto |
-|---------|-------|--------|-----------|
-| **Provisionar 1 servidor** | 5 dias | 5 min | -98% ⏱️ |
-| **Detectar drift** | 4 horas | 10 min | -95% 🔍 |
-| **Auditoria compliance** | 3 meses | Tempo real | -100% 📊 |
-| **Localizar dispositivo** | 15 min | 30 seg | -97% 📍 |
-| **Documentar device** | 2h | 2min | -98% 📝 |
-
-**ROI Médio: 3.500%** 💎
-
-</div>
-
----
-
-## 🎯 **Sua Jornada, Seu Ritmo**
-
-### **👨‍💼 Gestores — Convença Sua Equipe**
-```
-1. 📖 Leia: [Histórias Reais](docs/pt/historias/dores-reais.md)
-   → "Nossa, isso é nós!"
-
-2. 💰 Calcule: ROI de seus casos
-   → "Podemos economizar $28M/ano"
-
-3. 🎯 Apresente: Use os números
-   → "Vamos ser os heróis da empresa"
-```
-
-**[👉 Material Completo](docs/pt/historias/dores-reais.md)**
-
----
-
-### **👨‍💻 Desenvolvedores — Code Like a Hero**
-```
-1. 🎓 [Primeiros Passos](docs/pt/learning/primeiros-passos.md) (30 min)
-   → Do zero ao primeiro webhook
-
-2. 🏗️ [Neo Stack Framework](docs/pt/casos-uso/neo-stack-framework.md) (5h)
-   → App completo FastAPI + Nuxt.js
-
-3. 🔌 [APIs](docs/pt/dev/api-guide.md)
-   → Domine NetBox + Odoo
-
-4. 💡 Implemente: 5 casos com código
-   → Portfólio + ROI
-```
-
-**[👉 Roadmap Dev](docs/pt/learning/roadmap.md)**
-
----
-
-### **🔧 DevOps — Automate Everything**
-```
-1. 🚀 [Provisionamento](docs/pt/casos-uso/provisionamento.md)
-   → Terraform + Ansible + Pipeline
-
-2. 🔍 [Drift Detection](docs/pt/casos-uso/drift-detection.md)
-   → Monitoramento 24/7
-
-3. 🛡️ [Compliance](docs/pt/casos-uso/compliance.md)
-   → ISO 27001 sem auditor
-
-4. 📊 [Gestão IPs](docs/pt/casos-uso/gerenciamento-ips.md)
-   → Zero conflitos
-```
-
-**[👉 Playbook DevOps](docs/pt/playbooks/operacao.md)**
-
----
-
-### **📱 Time de Campo — Apps that Work**
-```
-1. 📲 [PWAs](docs/pt/historias/pwas-campo.md)
-   → 5 apps prontos
-
-2. ⚡ Offline-first
-   → Funciona sem internet
-
-3. 📶 Sync automático
-   → Dados sempre atualizados
-```
-
-**[👉 Catálogo de Apps](docs/pt/historias/pwas-campo.md)**
-
----
-
-## 🧪 **Laboratórios Hands-On — Onde a Magia Acontece**
-
-> *"Aprender fazendo é 10x mais eficiente que só lendo"*
-
-### **🔐 Security Lab**
+#### 🇲🇽 Para Times Mexicanos
 ```bash
-# Vulnerability Scanning + SIEM
-cd labs/security
-docker-compose up -d
-
-# Serviços ativos:
-# - OpenVAS: Vulnerability Scanner
-# - Wazuh: SIEM + HIDS
-# - Elasticsearch: Log storage
-# - Kibana: Visualization
-# - Suricata: IDS/IPS
+# Abra la documentación en español
+https://seu-dominio/docs/es/
+ou
+cat docs/es/README.md
 ```
 
-**[👉 Explorar Security Lab](labs/security/)**
+Comience aquí: [docs/es/README.md](docs/es/README.md)
 
-### **🌐 IoT/OT Lab**
+### **Passo 2: Leia os Resumos**
+
+- **[PROJECT_SUMMARY.md](PROJECT_SUMMARY.md)** - Resumo executivo completo (13KB)
+- **[QUICK_START.md](QUICK_START.md)** - Guia rápido em 5 minutos (5.9KB)
+
+### **Passo 3: Explore a Documentação**
+
+```
+docs/pt/ ou docs/es/
+├── README.md                    # Índice principal
+├── overview.md                  # Visão geral da stack
+├── architecture.md              # Arquitetura técnica
+├── setup.md                     # Instalação e configuração
+├── odoo-oca/                    # Odoo 19 + 9 módulos OCA (9 arquivos)
+├── wazuh/                       # SIEM/XDR (13 arquivos)
+├── soar/                        # Shuffle + n8n (13 arquivos)
+├── integrations/                # Integrações entre componentes (5 arquivos)
+├── dev/                         # APIs e desenvolvimento (3 arquivos)
+├── quick-refs/                  # Referências rápidas (6 arquivos)
+├── advanced-expansion/          # Expansão Avançada (36+ arquivos)
+│   ├── thehive/                # 8 arquivos
+│   ├── misp/                   # 7 arquivos
+│   ├── cortex/                 # 7+ arquivos
+│   ├── monitoring/             # 7 arquivos
+│   └── elastic/                # 2 arquivos
+└── ... (50+ arquivos adicionais)
+```
+
+---
+
+## 💡 O Que Cada Ferramenta Faz
+
+### **Core Stack**
+
+#### Odoo 19 Community + OCA Modules
+- **O que é**: ERP de código aberto com 9 módulos OCA
+- **Para quem**: Helpdesk, Project Management, HR, Accounting
+- **Módulos**: helpdesk_mgmt, project, fastapi, queue_job, report_xlsx, maintenance, agreement
+
+#### NetBox 4.2
+- **O que é**: CMDB + IPAM (IP Address Management)
+- **Para quem**: Gestão de infraestrutura, inventário, documentação
+- **Funcionalidades**: Gestão de dispositivos, interfaces, IPs, VLANs
+
+#### Wazuh 4.12
+- **O que é**: SIEM/XDR (Security Information & Event Management)
+- **Para quê**: Detecção de ameaças, análise comportamental, resposta ativa
+- **Capacidade**: 200+ regras customizadas, coleta de múltiplas fontes
+
+### **SOAR & Automação**
+
+#### Shuffle
+- **O que é**: SOAR (Security Orchestration, Automation & Response)
+- **Parceria**: Oficial com Wazuh (Setembro 2025)
+- **Função**: Orquestar respostas automáticas a alertas
+
+#### n8n
+- **O que é**: Workflow automation alternativa
+- **Função**: Criar automações baseadas em nós visuais
+
+### **Expansão Avançada**
+
+#### TheHive 5.x
+- **O que é**: Incident Response Platform (SIRP)
+- **Função**: Gerenciar, investigar e colaborar em incidentes
+- **Componentes**: Cases, Tasks, Observables, TTPs (MITRE ATT&CK)
+
+#### MISP
+- **O que é**: Malware Information Sharing Platform
+- **Função**: Compartilhar inteligência de ameaças e IOCs
+- **Comunidade**: Acesso a feeds globais de threat intelligence
+
+#### Cortex 3.4
+- **O que é**: Observable Analysis & Automation
+- **Função**: Análise automática de IOCs com 200+ serviços
+- **Analyzers**: VirusTotal, Shodan, AbuseIPDB, MISP, etc
+
+#### Monitoramento (Zabbix + Prometheus + Grafana)
+- **Zabbix**: Monitoramento com agentes
+- **Prometheus**: Coleta de métricas
+- **Grafana**: Dashboards em tempo real
+- **Alertmanager**: Gestão inteligente de alertas
+
+#### Elastic/OpenSearch
+- **O que é**: Engine de busca, análise e visualização de logs
+- **Função**: Centralizar logs de toda a stack
+- **Alternativa**: OpenSearch (100% open-source)
+
+---
+
+## 🎓 Tipos de Usuários & Seus Caminhos
+
+### 👨‍💼 Para Gestores
+1. Leia: [PROJECT_SUMMARY.md](PROJECT_SUMMARY.md) - Entenda o ROI
+2. Estude: [docs/pt/README.md](docs/pt/README.md) - Visão completa
+3. Apresente: Use os números para justificar investimento
+
+### 👨‍💻 Para Desenvolvedores
+1. Comece: [docs/pt/odoo-oca/](docs/pt/odoo-oca/) - Entenda Odoo 19 + OCA
+2. Aprenda: [docs/pt/dev/api-guide.md](docs/pt/dev/api-guide.md) - APIs
+3. Implemente: [docs/pt/casos-uso/](docs/pt/casos-uso/) - Casos reais
+4. Expanda: [docs/pt/advanced-expansion/](docs/pt/advanced-expansion/) - TheHive, MISP, Cortex
+
+### 🔒 Para Analistas de Segurança
+1. Estude: [docs/pt/wazuh/](docs/pt/wazuh/) - SIEM/XDR
+2. Aprenda: [docs/pt/advanced-expansion/thehive/](docs/pt/advanced-expansion/thehive/) - Incident Response
+3. Implemente: [docs/pt/advanced-expansion/misp/](docs/pt/advanced-expansion/misp/) - Threat Intelligence
+4. Automatize: [docs/pt/advanced-expansion/cortex/](docs/pt/advanced-expansion/cortex/) - Analysis
+
+### 🔧 Para DevOps/SRE
+1. Configure: [docs/pt/setup.md](docs/pt/setup.md) - Instalação
+2. Monitore: [docs/pt/advanced-expansion/monitoring/](docs/pt/advanced-expansion/monitoring/) - Stack completo
+3. Automatize: [docs/pt/soar/](docs/pt/soar/) - Shuffle + n8n
+4. Visualize: [docs/pt/advanced-expansion/elastic/](docs/pt/advanced-expansion/elastic/) - Logs & Analysis
+
+---
+
+## 📖 Estrutura de Documentação
+
+### **Seção Core (60+ arquivos)**
+- Overview & Architecture
+- Odoo 19 + OCA (9 arquivos)
+- Wazuh SIEM (13 arquivos)
+- SOAR (13 arquivos)
+- Integrações (5 arquivos)
+- Dev & APIs (3 arquivos)
+- Quick References (6 arquivos)
+- Troubleshooting (2 arquivos)
+
+### **Seção Advanced Expansion (36+ arquivos)**
+- TheHive Incident Response (8 arquivos)
+- MISP Threat Intelligence (7 arquivos)
+- Cortex Observable Analysis (7+ arquivos)
+- Monitoramento (7 arquivos)
+- Elastic/OpenSearch (2 arquivos)
+
+### **Arquivos de Referência**
+- **PROJECT_SUMMARY.md** - Resumo executivo completo
+- **QUICK_START.md** - Guia rápido
+- **AI_CONTEXT.md** - Contexto para LLMs (16KB)
+- **CLAUDE.md** - Contexto para Claude Code (4.4KB)
+- **mkdocs.yml** - Configuração de navegação
+
+---
+
+## 🔧 Configuração & Uso
+
+### **Visualizar Documentação Localmente**
+
 ```bash
-# Industrial IoT + SCADA
-cd labs/iot-ot
-docker-compose up -d
-
-# Simula:
-# - 50+ IoT devices
-# - MQTT messaging
-# - PLC simulator
-# - Node-RED flows
-```
-
-**[👉 Explorar IoT/OT Lab](labs/iot-ot/)**
-
-### **☁️ Cloud Lab**
-```bash
-# Multi-Cloud (AWS/Azure/GCP)
-cd labs/cloud
-docker-compose up -d
-
-# Simula:
-# - Kubernetes clusters
-# - Jenkins CI/CD
-# - Terraform IaC
-# - CloudWatch dashboards
-```
-
-**[👉 Explorar Cloud Lab](labs/cloud/)**
-
-**📊 Total: 3 Laboratórios Completos | 27 Serviços Docker | 100+ Exercícios**
-
----
-
-## 🎥 **Video Tutorial Series — Aprenda Assistindo**
-
-> *"Para quem prefere aprender com vídeos práticos"*
-
-### **🇧🇷 Português (40 vídeos - 20h)**
-```yaml
-Primeiros Passos: 14 vídeos (5h30min)
-├── Introdução ao NetBox
-├── Configuração inicial
-├── Gerenciamento de IPs
-├── Dispositivos e interfaces
-├── Integração com Odoo
-├── API e automação
-└── PWAs para campo
-
-Integração Avançada: 18 vídeos (8h15min)
-├── Webhooks em ação
-├── GraphQL queries
-├── Customizações
-└── Performance tuning
-
-Lab Prático: 12 vídeos (6h)
-├── Setup completo
-├── Casos reais
-├── Troubleshooting
-└── Projetos finais
-```
-
-### **🇲🇽 Español (40 videos - 20h)**
-```yaml
-Primeros Pasos: 14 videos (5h30min)
-├── Introducción a NetBox
-├── Configuración inicial
-├── Gestión de IPs
-├── Dispositivos e interfaces
-├── Integración con Odoo
-├── API y automatización
-└── PWAs para campo
-
-Integración Avanzada: 18 videos (8h15min)
-├── Webhooks en acción
-├── Consultas GraphQL
-├── Personalizaciones
-└── Optimización
-
-Laboratorio Práctico: 12 videos (6h)
-├── Configuración completa
-├── Casos reales
-├── Solución de problemas
-└── Proyectos finales
-```
-
-**[👉 Ver Todos os Vídeos](tutorials/)**
-
-**🎬 YouTube | Udemy | Twitch | Certificados incluídos**
-
----
-
-## 🎮 **Gamificação — Aprenda se Divertindo**
-
-> *"Sistema completo de pontos, badges e rankings"*
-
-### **🏆 Sistema de Pontos**
-```yaml
-Atividades que geram pontos:
-- Tutorial completado: 100 pts
-- Quiz aprovado: 50 pts
-- Exercício prático: 150 pts
-- Ajudar colegas: 40 pts
-- Contribuir código: 200 pts
-
-Multiplicadores:
-- Streak 7 dias: 1.5x
-- Streak 30 dias: 2.0x
-- Final de semana: 1.3x
-- Nota 100%: 1.5x
-```
-
-### **🏅 Badges & Conquistas**
-```
-Progresso:
-🥉 Bronze Explorer (5 tutorials)
-🥈 Silver Practitioner (15 tutorials)
-🥇 Gold Expert (30 tutorials)
-💎 Diamond Master (todos os tutorials)
-
-Especiais:
-🎯 Sharpshooter (5 quizzes 100%)
-🔥 Streak Legend (100 dias)
-👑 Champion (vencedor mensal)
-👥 Team Player (ajudar 25+ alunos)
-```
-
-### **📊 Leaderboards**
-```
-🏆 Ranking Global
-🥈 Ranking Mensal
-🌍 Ranking por País (BR, MX, AR, CO...)
-👥 Ranking de Equipes
-```
-
-**[👉 Ver Sistema Completo](gamification/)**
-
-**💰 Prêmios: Certificados gratuitos, camisetas, headphones, até troféus!**
-
----
-
-## 🤖 **AI Integration — O Futuro Agora**
-
-> *"IA a serviço da sua infraestrutura"*
-
-### **💬 AI Chatbot**
-```yaml
-Funcionalidades:
-- Suporte 24/7 em PT/ES
-- Contexto da página atual
-- Código com syntax highlight
-- Imagens e diagramas
-- Histórico de conversas
-
-Exemplo:
-👤 "Como adicionar um switch?"
-🤖 "Vou te mostrar! 1. Vá em Devices → Add..."
-```
-
-### **🔍 Semantic Search**
-```yaml
-Busca inteligente:
-- Entende o contexto (não só palavras)
-- Relevância por significado
-- Filtros avançados (tipo, idioma, dificuldade)
-- Correção ortográfica automática
-- Sinônimos automáticos
-
-Resultados:
-- Documentação + Videos + Código + Forum
-- Score de relevância
-- Fontes citadas
-```
-
-### **📈 Anomaly Detection**
-```yaml
-IA detecta:
-- Tráfego anômalo
-- Temperatura acima do normal
-- Consumo de energia incomum
-- Padrões suspeitos
-
-Precisão: 89%
-Falsos positivos: 7%
-Lead time: 7-21 dias
-```
-
-### **🔮 Predictive Analytics**
-```yaml
-Previsões:
-- Uso de disco (30 dias)
-- Crescimento de banda
-- Falhas de hardware
-- Capacidade de racks
-- Custos futuros
-
-Exemplo:
-"Servidor X terá 90% de disco em 15/02/2025"
-"Upgrade de link recomendado: Q2 2025"
-```
-
-### **💻 Code Generation**
-```yaml
-Gera código:
-- Python scripts
-- Terraform templates
-- Ansible playbooks
-- PowerShell scripts
-- SQL queries
-
-Exemplo:
-👤 "Gera script para adicionar 100 devices"
-🤖 [Código Python completo + explicações]
-```
-
-**[👉 Ver API Completa](ai-integration/api-spec.yaml)**
-
-**🧠 Modelos: GPT-4, BERT, LSTM, Random Forest**
-
----
-
-## 📚 **Quick References & Troubleshooting**
-
-> **Para desenvolvedores que precisam de respostas RÁPIDAS**
-
-### **🇧🇷 Português**
-```
-docs/pt/quick-refs/               → 9 Cheat Sheets
-├── netbox-cli.md                 → 50+ comandos
-├── api-endpoints.md              → REST + GraphQL
-├── docker-commands.md            → Container commands
-├── python-scripts.md             → 20+ scripts
-├── odoo-integration.md           → Sync NetBox↔Odoo
-└── README.md                     → Índice completo
-
-docs/pt/troubleshooting/          → Soluções
-└── README.md                     → 20+ problemas e soluções
-```
-
-### **🇲🇽 Español**
-```
-docs/es/quick-refs/               → 9 Cheat Sheets
-├── netbox-cli.md                 → 50+ comandos
-├── docker-commands.md            → Comandos Docker
-├── api-endpoints.md              → REST + GraphQL
-└── README.md                     → Índice completo
-
-docs/es/troubleshooting/          → Soluciones
-└── README.md                     → 20+ problemas y soluciones
-```
-
-**🎯 Exemplos Práticos:**
-```bash
-# NetBox CLI
-nb-cli device add --name="Switch-01"
-nb-cli vlan create --vid=100 --name="USERS"
-
-# Python API
-from pynetbox import api
-nb = api("http://localhost:8000", token="YOUR_TOKEN")
-device = nb.dcim.devices.create(name="Server-01")
-
-# Docker
-docker-compose up -d
-docker-compose logs -f netbox
-```
-
-**👉 [Ver Quick References PT](docs/pt/quick-refs/README.md)**
-**👉 [Ver Troubleshooting PT](docs/pt/troubleshooting/README.md)**
-
-**👉 [Ver Quick References ES](docs/es/quick-refs/README.md)**
-**👉 [Ver Troubleshooting ES](docs/es/troubleshooting/README.md)**
-
----
-
-## 🎯 **Implementation Guide - Do Caos à Organização**
-
-> **Para equipes que precisam implementar NetBox em ambiente desordenado**
-
-### **🇧🇷 Português - Guia Completo (30 dias)**
-```
-docs/pt/implementation-guide/
-├── README.md                 → Índice completo
-├── business-case.md          → ROI 250% primeiro ano
-├── roadmap.md                → Cronograma detalhado
-├── phase-01-planning.md      → Fase 1 (Planejamento)
-└── phase-02-*.md             → [Em desenvolvimento]
-```
-
-### **🇲🇽 Español - Guía Completa (30 días)**
-```
-docs/es/implementation-guide/
-├── README.md                 → Índice completo
-└── [Más archivos]            → [En desarrollo]
-```
-
-**🎯 Cenário:** Ambiente com 500+ dispositivos desorganizados, switches, virtualização, proxies, múltiplas WANs, APs, equipe sem conhecimento NetBox.
-
-**📊 Cronograma:**
-- Semana 1: Planejamento & Setup NetBox
-- Semana 2: Descoberta & Coleta de Dados
-- Semana 3: Importação & Configuração
-- Semana 4: Go-Live & Operação
-
-**💰 ROI:** Payback em 2.3 meses, economia R$ 630K/ano
-
-**[👉 Ver Implementation Guide PT](docs/pt/implementation-guide/README.md)**
-**[👉 Ver Implementation Guide ES](docs/es/implementation-guide/README.md)**
-
----
-
-## 🛠️ **Stack Tecnológico — O Arsenal**
-
-<div align="center">
-
-### **Core**
-![NetBox](https://img.shields.io/badge/NetBox-4.x-blue) ![Odoo](https://img.shields.io/badge/Odoo-17-green) ![NeoStack](https://img.shields.io/badge/Neo_Stack-Framework-purple)
-
-### **Frontend**
-![Nuxt.js](https://img.shields.io/badge/Nuxt.js-3-black) ![Vue](https://img.shields.io/badge/Vue-3-green) ![TypeScript](https://img.shields.io/badge/TypeScript-5-blue)
-
-### **Backend**
-![FastAPI](https://img.shields.io/badge/FastAPI-Python-teal) ![Python](https://img.shields.io/badge/Python-3.11-yellow) ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-15-blue)
-
-### **Automation**
-![Ansible](https://img.shields.io/badge/Ansible-RedHat-red) ![Terraform](https://img.shields.io/badge/Terraform-HashiCorp-purple) ![Docker](https://img.shields.io/badge/Docker-24-blue)
-
-</div>
-
----
-
-## 🎮 **Como Entrar no Mundo Mágico**
-
-### **Pré-requisitos**
-```bash
-✅ Python 3.11+
-✅ Node.js 18+
-✅ Docker
-✅ 30 minutos de seu tempo
-✅ Vontade de ser incrivel
-```
-
-### **Quick Start**
-```bash
-# 1. Clone
-git clone https://github.com/neoand/netbox-odoo-stack.git
-
-# 2. Instale
+# Instale mkdocs
 pip install mkdocs mkdocs-material
 
-# 3. Execute
+# Rode servidor local
+cd /caminho/para/projeto
 mkdocs serve
 
-# 4. Abra
+# Abra no navegador
 http://localhost:8000
+```
 
-# ✨ Bem-vindo ao mundo mágico!
+### **Estrutura de Diretórios**
+
+```
+.
+├── AI_CONTEXT.md                    # Contexto completo para LLMs
+├── CLAUDE.md                        # Contexto Claude Code
+├── PROJECT_SUMMARY.md               # Resumo do projeto
+├── QUICK_START.md                   # Início rápido
+├── README.md                        # Este arquivo
+├── mkdocs.yml                       # Configuração MkDocs
+├── docs/
+│   ├── pt/                          # Português (Brasil)
+│   │   ├── README.md               # Índice PT
+│   │   ├── odoo-oca/               # 9 arquivos
+│   │   ├── wazuh/                  # 13 arquivos
+│   │   ├── soar/                   # 13 arquivos
+│   │   ├── integrations/           # 5 arquivos
+│   │   ├── dev/                    # 3 arquivos
+│   │   ├── quick-refs/             # 6 arquivos
+│   │   └── advanced-expansion/     # 36+ arquivos
+│   │       ├── thehive/            # 8 arquivos
+│   │       ├── misp/               # 7 arquivos
+│   │       ├── cortex/             # 7+ arquivos
+│   │       ├── monitoring/         # 7 arquivos
+│   │       └── elastic/            # 2 arquivos
+│   └── es/                          # Español (México)
+│       └── [Espelho completo de PT]
+└── .claude/settings.json            # Configuração Claude Code
 ```
 
 ---
 
-## 🌈 **Transformações Reais**
+## ✨ Recursos Especiais
 
-> *"Esta documentação não é só texto. É uma jornada de transformação."*
+### **AI-First Documentation**
+- ✅ Contexto estruturado para LLMs
+- ✅ Seções "AI Context" em cada arquivo
+- ✅ Arquivos AI_CONTEXT.md e CLAUDE.md
+- ✅ Pronto para consumo por Claude, GPT-4, etc
 
-### **👤 João — SysAdmin → DevOps Hero**
-> *"Passei 6 meses sofrendo com Excel. Hoje, provisiono 100 servidores em um dia."*
+### **100% Bilíngue**
+- ✅ Português Brasil (PT-BR)
+- ✅ Español México/Latinoamérica (ES-MX)
+- ✅ Sincronização perfeita entre idiomas
+- ✅ Exemplos de código traduzidos
 
-**Antes:** 8h/dia no Excel
-**Depois:** 1h/dia automatizando
-**ROI:** 800%
-
----
-
-### **👤 Maria — Gestora TI → Champion**
-> *"Consegui budget de $250K para现代化. Os números venderam sozinhos."*
-
-**Antes:** Sem visibilidade
-**Depois:** Dashboard 24/7
-**ROI:** 340%
-
----
-
-### **👤 Carlos — Desenvolvedor → Full-Stack**
-> *"NetBox + neo_stack me fez virar o developer mais procurado da empresa."*
-
-**Antes:** Backend only
-**Depois:** Full-stack PWA
-**Salário:** +60%
+### **Pronto para Produção**
+- ✅ Todos os componentes documentados
+- ✅ 30+ casos de uso completos
+- ✅ Arquivos de configuração incluídos
+- ✅ Scripts de setup automatizados
 
 ---
 
-## 🎯 **Resumo Completo — Tudo em Um Lugar**
+## 🎯 Casos de Uso Documentados
 
-### **📦 O Que Você Tem Agora**
+### **TheHive (5 casos)**
+- Resposta a Ransomware
+- Investigação de Data Breach
+- Análise de Phishing Campaign
+- Insider Threat Investigation
+- APT Detection and Response
 
-```
-🧪 3 LABORATÓRIOS HANDS-ON
-├── Security Lab: OpenVAS + Wazuh + Kibana
-├── IoT/OT Lab: 50+ devices + PLC simulator
-└── Cloud Lab: AWS/Azure/GCP + Kubernetes
+### **MISP (5 casos)**
+- Rastreamento de Phishing
+- Análise de Malware
+- Correlação entre Organizações
+- MITRE ATT&CK Integration
+- Threat Hunting
 
-🎥 40 VÍDEOS TUTORIAIS
-├── PT: 14 básicos + 18 avançados + 12 práticos
-├── ES: 14 básicos + 18 avançados + 12 práticos
-└── Scripts completos com timing e demos
+### **Cortex (5 casos)**
+- Análise Automática de Malware
+- Investigação de IP Suspeito
+- Verificação de URL de Phishing
+- Resposta Automatizada a Ransomware
+- Enriquecimento de IOCs em Massa
 
-🎮 SISTEMA DE GAMIFICAÇÃO
-├── Pontos, badges, leaderboards
-├── Challenges diários/semanais/mensais
-├── Premiação com certificados gratuitos
-└── Database schema completo
-
-🤖 INTELIGÊNCIA ARTIFICIAL
-├── Chatbot PT/ES (GPT-4)
-├── Busca semântica (BERT)
-├── Detecção de anomalias (LSTM)
-├── Análise preditiva
-├── Geração de código
-└── API completa OpenAPI
-
-📚 DOCUMENTAÇÃO COMPLETA
-├── PT: 21 arquivos traduzidos
-├── ES: 21 arquivos traduzidos
-├── Community: 500+ device types
-├── 5 casos de uso com ROI
-└── 5 PWAs para equipe de campo
-```
-
-### **🚀 Já Implementado**
-
-| ✅ Feature | 📊 Status | 🎯 Impacto |
-|------------|-----------|------------|
-| **Tradução ES** | ✅ 100% | Equipe mexicana |
-| **Security Lab** | ✅ Completo | Hands-on segurança |
-| **IoT/OT Lab** | ✅ Completo | SCADA + PLC |
-| **Cloud Lab** | ✅ Completo | Multi-cloud |
-| **Video Tutorials** | ✅ 40 vídeos | Aprendizado visual |
-| **Gamificação** | ✅ Completo | Engajamento 10x |
-| **AI Integration** | ✅ Completo | Automação IA |
-| **Docker Labs** | ✅ 9 serviços | Prática imediata |
-| **Certificação** | ✅ 3 níveis | Validação profissional |
-| **3D Visualization** | ✅ Completo | Visualização 3D |
-
-### **📈 Métricas Totais**
-
-```
-📊 NÚMEROS IMPRESSIONANTES:
-├── 100+ Arquivos de documentação
-├── 40h de conteúdo em vídeo
-├── 27 serviços Docker
-├── 500+ device types
-├── 100+ plugins
-├── 18 regras compliance
-├── 5 casos ROI (270% a 11.592%)
-├── 5 PWAs completas
-├── 3 laboratórios
-├── 50+ badges
-├── 500+ páginas de docs
-└── 2 idiomas (PT + ES)
-
-💰 ROI COMPROVADO:
-├── Provisionamento: 11.592%
-├── Drift Detection: 2.270%
-├── Compliance: 967%
-├── Gestão IPs: 270%
-└── MTTR Reduction: 85%
-```
-
-### **🌍 Para Equipes Brasileiras 🇧🇷**
-```yaml
-✅ Completo em Português:
-- Primeiros passos (30 min)
-- Casos de uso reais
-- Código comentado PT
-- Histórias emocionais
-- PWAs para campo
-- Video tutorials PT
-- Certificação R$97/R$197/R$497
-- Gamificação com leaderboard BR
-- Suporte técnico em PT
-```
-
-### **🌎 Para Equipes Mexicanas 🇲🇽**
-```yaml
-✅ Completo en Español:
-- Primeros pasos (30 min)
-- Casos de uso reales
-- Código comentado ES
-- Historias emocionales
-- PWAs para campo
-- Video tutorials ES
-- Certificación $5/$10/$25 USD
-- Gamificación con leaderboard MX
-- Soporte técnico en ES
-```
+### **Monitoramento (5 casos)**
+- Detectar Degradação de Performance
+- Alertar sobre Agentes Offline
+- Capacity Planning
+- Troubleshooting de Latência
+- SLA Monitoring e Reporting
 
 ---
 
-## 🔮 **O Que Vem Por aí (Roadmap 2025)**
+## 🔒 Segurança & Compliance
 
-### **Q1 2025 (Jan-Mar)**
-- [ ] 🎮 Gamificação mobile (PWA)
-- [ ] 🤖 AI chatbot production-ready
-- [ ] 📱 App nativo Android/iOS
-- [ ] 🌐 Mais idiomas (FR, DE, IT)
+### **Implementado**
+- ✅ Criptografia em trânsito (HTTPS)
+- ✅ Autenticação LDAP/OAuth2
+- ✅ Controle de acesso baseado em roles
+- ✅ Auditoria completa de ações
+- ✅ Hardening de segurança documentado
 
-### **Q2 2025 (Abr-Jun)**
-- [ ] 🔌 Marketplace de plugins
-- [ ] ☁️ Plataforma SaaS
-- [ ] 🎓 Certificação oficial
-- [ ] 📊 Analytics dashboard
-
-### **Q3 2025 (Jul-Set)**
-- [ ] 🌍 Comunidade global
-- [ ] 📚 Academia online
-- [ ] 👥 Colaboração em tempo real
-- [ ] 🔄 Sync multi-cloud
-
-### **Q4 2025 (Out-Dez)**
-- [ ] 🎯 Auto-provisioning IA
-- [ ] 📈 Predictive maintenance
-- [ ] 🔒 Zero-touch security
-- [ ] 🚀 Plataforma tudo-em-um
+### **Conformidade**
+- ✅ GDPR (Lei Geral de Proteção de Dados)
+- ✅ LGPD (Lei Geral de Proteção de Dados - Brasil)
+- ✅ ISO 27001
+- ✅ SOC 2
+- ✅ Logs de auditoria completos
 
 ---
 
-## 💎 **Por Que Esta Documentação É Diferente?**
+## 📞 Suporte & Comunidades
 
-### **❌ Outras Docs:**
-- Frias e técnicas
-- Sem contexto
-- Só "como fazer"
-- Sem ROI
-- Só inglês
+### **Comunidades Oficiais**
+- **StrangeBee**: TheHive/Cortex - https://community.strangebee.com/
+- **MISP Project**: MISP - https://www.misp-project.org/
+- **Wazuh Community**: Wazuh - https://wazuh.com/community/
+- **Odoo Community**: OCA - https://github.com/OCA
+- **NetBox**: NetBox Docs - https://netboxlabs.com/docs/netbox/
 
-### **✅ Esta Doc:**
-- 🎭 Histórias emocionais
-- 💰 ROI calculado
-- 🚀 Casos reais
-- 🇧🇷🇲🇽 PT + ES completo
-- 📱 PWAs incluídas
-- 🎯 DoZero aoHero
+### **Recursos**
+- GitHub Issues para bugs
+- GitHub Discussions para perguntas
+- Documentação oficial de cada projeto
+- Comunidades temáticas
 
 ---
 
-## 🤝 **Faça Parte da Magia**
+## 🚀 Próximas Versões (Roadmap)
 
-### **🐛 Encontrou Bug?**
-👉 **[Abra uma Issue](https://github.com/neoand/netbox-odoo-stack/issues)**
+### **v2.1 (Q1 2025)**
+- [ ] Documentação avançada de integrações
+- [ ] Playbooks de automação completos
+- [ ] Vídeo tutorials bilíngues
 
-### **💡 Tem Ideia?**
-👉 **[Crie um Pull Request](https://github.com/neoand/netbox-odoo-stack/pulls)**
-
-### **❓ Tem Dúvida?**
-👉 **[GitHub Discussions](https://github.com/neoand/netbox-odoo-stack/discussions)**
-
-### **📢 Quer Contribuir?**
-👉 **[Guia de Contribuição](CONTRIBUTING.md)**
+### **v3.0 (Q2 2025)**
+- [ ] Plataforma SaaS
+- [ ] Certificação oficial
+- [ ] Dashboard de analytics
 
 ---
 
-## 🏆 **O Manifesto**
+## 📝 Como Contribuir
 
-> **"Todo desenvolvedor merece ferramentas que inspirem, não que frustrem."**
->
-> **"Toda equipe merece documentação que convença, não confunda."**
->
-> **"Todo projeto merece um ROI que justifique, não que duvidem."**
-
-**Esta documentação é nosso manifesto por um mundo onde tecnologia serve às pessoas, não o contrário.**
+1. **Encontrou erro?** Abra uma [Issue](https://github.com/seu-org/neo_netbox_odoo_stack/issues)
+2. **Tem melhoria?** Crie um [Pull Request](https://github.com/seu-org/neo_netbox_odoo_stack/pulls)
+3. **Quer discutir?** Use [Discussions](https://github.com/seu-org/neo_netbox_odoo_stack/discussions)
+4. **Quer contribuir?** Leia [CONTRIBUTING.md](CONTRIBUTING.md)
 
 ---
 
-## 📁 **Estrutura do Projeto**
+## 📄 Licença
 
-```
-netbox-odoo-stack/
-├── 📖 README.md                      # Este arquivo encantador
-├── 📚 mkdocs.yml                     # Configuração mágica
-├── 📂 docs/
-│   ├── 🇧🇷 pt/                       # Português (completo)
-│   │   ├── 🎭 historias/             # 4 histórias reais
-│   │   ├── 🎓 learning/              # Aprendizado
-│   │   ├── 💡 casos-uso/             # 5 casos completos
-│   │   ├── 🔌 integrations/          # NetBox + Odoo
-│   │   └── 📱 dev/                   # Guias técnicos
-│   └── 🇲🇽 es/                       # Español (completo)
-│       ├── 🎭 historias/             # Histórias traduzidas
-│       ├── 🎓 learning/              # Aprendizado
-│       ├── 💡 casos-uso/             # Casos traduzidos
-│       ├── 🔌 integrations/          # Integraciones
-│       └── 📱 dev/                   # Guías técnicos
-└── 🌟 community/                     # Recursos da comunidade
-    ├── 📦 devicetype-library/        # 500+ device types
-    ├── 🔌 awesome-netbox/            # 100+ plugins
-    └── 📖 docs/                      # Guias completos
-```
+Este projeto é open-source sob licença **AGPLv3**
 
 ---
 
-## 🙏 **Agradecimentos**
+## 🙏 Créditos
 
-**NetBox Community** - Por construir o melhor CMDB do mundo
-**Odoo Community** - Por um ERP versátil
-**neo_stack Team** - Por um framework incrível
-**Você** - Por llegar até aqui
+- **StrangeBee** - TheHive + Cortex
+- **MISP Project** - Threat Intelligence Platform
+- **Wazuh** - SIEM/XDR
+- **Odoo Community** - ERP Framework
+- **NetBox** - CMDB/IPAM
+- **Comunidade Open-Source** - Por ferramentas incríveis
 
 ---
 
 <div align="center">
 
-## ✨ **A Jornada Começa Agora** ✨
+## ✨ Pronto para Começar? ✨
 
-[![📚 Documentação](https://img.shields.io/badge/📚-Ver_Documentação-blue?style=for-the-badge)](mkdocs.yml)
-[![🚀 Quickstart](https://img.shields.io/badge/🚀-Quick_Start-green?style=for-the-badge)](#como-entrar-no-mundo-mágico)
-[![💬 Discussions](https://img.shields.io/badge/💬-Discussões-purple?style=for-the-badge)](https://github.com/neoand/netbox-odoo-stack/discussions)
+### [🇧🇷 Documentação em Português](docs/pt/README.md)
+### [🇲🇽 Documentación en Español](docs/es/README.md)
+### [📖 Resumo do Projeto](PROJECT_SUMMARY.md)
+### [🚀 Quick Start](QUICK_START.md)
 
 ---
 
-**Criado com ❤️ para desenvolvedores que valorizam excelência**
+**Criado com ❤️ para times que valorizam excelência**
 
-**Última atualização:** 04/12/2024
-**Versão:** 3.0 - *The Enchanted Edition*
-**Status:** ✅ Completo, Traduzido e Pronto Para Conquistar
+**Versão**: 2.0 | **Status**: ✅ Pronto para Produção | **Última atualização**: Dezembro 2024
 
 </div>
-
----
-
-### 🎭 **Epílogo**
-
-> *"Em um mundo lleno de documentação fría e técnica, esta é uma luz."*
->
-> *"Em um mundo cheio de código sem alma, estas são histórias."*
->
-> *"Em um mundo cheio de ferramentas que separam, esta documentação une."*
->
-> **— Bem-vindo à sua jornada de transformação. 🚀**

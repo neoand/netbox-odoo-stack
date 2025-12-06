@@ -115,6 +115,42 @@ docker-compose up -d
 
 ---
 
+## 🌐 **Red**
+
+```bash
+# Ver redes
+docker network ls
+
+# Inspeccionar red
+docker network inspect netbox-odoo-stack_default
+
+# Conectar container a red
+docker network connect network-name container-name
+
+# Desconectar
+docker network disconnect network-name container-name
+```
+
+---
+
+## 📦 **Volúmenes**
+
+```bash
+# Listar volúmenes
+docker volume ls
+
+# Inspeccionar volumen
+docker volume inspect netbox-postgres-data
+
+# Backup volumen
+docker run --rm -v netbox-postgres-data:/source -v $(pwd):/backup alpine tar czf /backup/backup.tar.gz -C /source .
+
+# Restaurar volumen
+docker run --rm -v netbox-postgres-data:/target -v $(pwd):/backup alpine tar xzf /backup/backup.tar.gz -C /target
+```
+
+---
+
 ## 🐳 **Docker Básico**
 
 ```bash
@@ -129,6 +165,10 @@ docker rm netbox
 
 # Ejecutar comando
 docker exec netbox ls -la
+
+# Copiar archivos
+docker cp netbox:/path/to/file ./local-file
+docker cp ./local-file netbox:/path/to/file
 
 # Ver logs
 docker logs -f netbox
@@ -154,6 +194,54 @@ psql -h localhost -U netbox
 # Redis
 docker-compose up -d redis
 redis-cli ping
+
+# neo_stack
+docker-compose up -d neo-stack
+curl http://localhost:3000
+```
+
+---
+
+## 🔧 **Configuración**
+
+```bash
+# Editar docker-compose.yml
+nano docker-compose.yml
+
+# Variables de entorno
+nano .env
+
+# Recargar configuración
+docker-compose down
+docker-compose up -d
+
+# Ver configuración
+docker-compose config
+```
+
+---
+
+## 🚨 **Resolución de Problemas**
+
+```bash
+# Container no inicia
+docker-compose logs netbox
+
+# Verificar puertos
+netstat -tlnp | grep 8000
+lsof -i :8000
+
+# Verificar recursos
+docker system df
+docker stats --no-stream
+
+# Verificar red
+docker network inspect bridge
+
+# Reset completo
+docker-compose down -v --remove-orphans
+docker system prune -a
+docker-compose up -d --build
 ```
 
 ---
@@ -173,6 +261,66 @@ dcu          # Iniciar
 dcd          # Parar
 dcl netbox   # Logs NetBox
 dps          # Estado
+```
+
+---
+
+## 📊 **Monitoreo**
+
+```bash
+# Health check NetBox
+curl -f http://localhost:8000/api/ || echo "NetBox caído"
+
+# Estado Odoo
+curl -f http://localhost:8069/web/database/status
+
+# PostgreSQL
+docker-compose exec postgres pg_isready -U netbox
+
+# Redis
+docker-compose exec redis redis-cli ping
+```
+
+---
+
+## 🔐 **Seguridad**
+
+```bash
+# Ver imágenes vulnerables
+docker scout cves netboxcommunity/netbox:latest
+
+# Escaneo manual
+docker run --rm -v /var/run/docker.sock:/var/run/docker.sock \
+  aquasec/trivy image netboxcommunity/netbox:latest
+
+# Limpiar secrets
+docker-compose exec netbox printenv | grep -i password
+```
+
+---
+
+## 💡 **Consejos**
+
+```bash
+# Mejor rendimiento
+# docker-compose.yml
+services:
+  netbox:
+    deploy:
+      resources:
+        limits:
+          memory: 2G
+          cpus: '1.0'
+
+# Rotación de logs
+# docker-compose.yml
+services:
+  netbox:
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
 ```
 
 ---

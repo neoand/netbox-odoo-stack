@@ -1,12 +1,14 @@
-# 🛡️ Wazuh - Security Intelligence & Monitoring Platform
+# 🛡️ Wazuh 4.12+ - Security Intelligence & Monitoring Platform
 
-> **Descobrindo o Ecossistema Wazuh: De SIEM a Mobile - Tudo que Você Precisa Saber**
+> **AI Context**: Este é o ponto de entrada da documentação Wazuh para o stack NEO v2.0. Atualizado para Wazuh 4.12 com novas capacidades: eBPF FIM, CTI links diretos, hot reload de configurações, e integrações nativas com Shuffle (parceria oficial Set/2025) e n8n.
+
+> **Descobrindo o Ecossistema Wazuh: De SIEM a SOAR - Tudo que Você Precisa Saber**
 
 ---
 
 ## 🎯 **O que é Wazuh?**
 
-**Wazuh** é uma plataforma open source de segurança (SIEM) e XDR (Extended Detection and Response) que oferece visibilidade, detecção de ameaças e conformidade para infraestruturas de TI. Desenvolvido pela Wazuh Community e Wazuh Inc., é uma solução completa que combina:
+**Wazuh 4.12+** é uma plataforma open source de segurança (SIEM) e XDR (Extended Detection and Response) que oferece visibilidade, detecção de ameaças e conformidade para infraestruturas de TI. Desenvolvido pela Wazuh Community e Wazuh Inc., é uma solução completa que combina:
 
 ### 🔥 **Core Components**
 
@@ -18,32 +20,33 @@
 | **Wazuh Dashboard** | Kibana-based | Visualização, alertas e relatórios |
 | **Wazuh Integration API** | RESTful API | Conecta com ferramentas externas |
 
-### 🎭 **Capacidades Principais**
+### 🎭 **Capacidades Principais (Wazuh 4.12+)**
 
 ```
 🛡️ SECURITY MONITORING:
-├─ ✓ File Integrity Monitoring (FIM)
+├─ ✓ File Integrity Monitoring (FIM) - Agora com eBPF no Linux
 ├─ ✓ Sistema de Detecção de Intrusão (IDS/IPS)
-├─ ✓ Vulnerability Detection
-├─ ✓ Configuration Assessment
-├─ ✓ Regulatory Compliance (PCI-DSS, GDPR, HIPAA, etc.)
+├─ ✓ Vulnerability Detection - Integrado com NIST NVD
+├─ ✓ Configuration Assessment - Hot reload sem reiniciar
+├─ ✓ Regulatory Compliance (PCI-DSS, GDPR, HIPAA, LGPD)
 ├─ ✓ Log Analysis & Correlation
-├─ ✓ Threat Hunting
-└─ ✓ Incident Response
+├─ ✓ Threat Hunting - Com CTI links diretos
+└─ ✓ Incident Response - Automação via SOAR
 
 📊 VISIBILITY & ANALYTICS:
-├─ ✓ Real-time dashboards
-├─ ✓ Custom visualizations
-├─ ✓ Statistical analysis
-├─ ✓ Trend analysis
-└─ ✓ Custom reports
+├─ ✓ Real-time dashboards - OpenSearch 2.x
+├─ ✓ Custom visualizations - Vega charts
+├─ ✓ Statistical analysis - ML integrado
+├─ ✓ Trend analysis - Anomaly detection
+└─ ✓ Custom reports - Agendamento automático
 
-🔗 INTEGRATIONS:
-├─ ✓ Threat Intelligence Feeds
-├─ ✓ SOAR Platforms (Phantom, Demisto)
-├─ ✓ ITSM Tools (ServiceNow, Jira)
-├─ ✓ ChatOps (Slack, Teams, Discord)
-└─ ✓ CMDB Systems (NetBox, ServiceNow)
+🔗 INTEGRATIONS (Novas em 4.12):
+├─ ✓ Threat Intelligence Feeds - MISP, OTX, ThreatFox
+├─ ✓ SOAR Platforms - Shuffle (parceria oficial), n8n
+├─ ✓ ITSM Tools - Odoo 19, ServiceNow, Jira
+├─ ✓ ChatOps - Slack, Teams, Discord, Mattermost
+├─ ✓ CMDB Systems - NetBox 4.2, ServiceNow
+└─ ✓ Cloud Providers - AWS Security Hub, Azure Sentinel
 ```
 
 ---
@@ -329,35 +332,46 @@ FLUXO:
 
 ## 💡 **Quick Start**
 
-### **🚀 Instalação Rápida (Docker)**
+### **🚀 Instalação Rápida (Docker - Wazuh 4.12)**
 
 ```bash
-# 1. Clonar repositório oficial
-git clone https://github.com/wazuh/wazuh-docker.git
-cd wazuh-docker
+# 1. Clonar repositório oficial (versão 4.12+)
+git clone -b 4.12 https://github.com/wazuh/wazuh-docker.git
+cd wazuh-docker/single-node
 
-# 2. Subir stack completa
-docker-compose -f generate-indexer-certs.yml run --rm-generator
+# 2. Subir stack completa (OpenSearch 2.x)
+docker-compose -f generate-indexer-certs.yml run --rm generator
 docker-compose up -d
 
 # 3. Acessar
 # Wazuh Dashboard: https://localhost
-# User: admin / Password: admin123
+# User: admin / Password: SecretPassword (altere no .env)
 # API: https://localhost:55000
+# OpenSearch: https://localhost:9200
 
 # 4. Verificar status
 docker-compose ps
+curl -k https://localhost:55000/ -u wazuh:wazuh
 
-# 5. Instalar agente (exemplo: Ubuntu)
-curl -s https://packages.wazuh.com/key/GPG-KEY-WAZUH | apt-key add -
-echo "deb https://packages.wazuh.com/4.x/apt/ stable main" | tee /etc/apt/sources.list.d/wazuh.list
-apt-get update
-apt-get install wazuh-agent
+# 5. Instalar agente (exemplo: Ubuntu 22.04)
+curl -s https://packages.wazuh.com/key/GPG-KEY-WAZUH | gpg --dearmor | sudo tee /usr/share/keyrings/wazuh.gpg > /dev/null
+echo "deb [signed-by=/usr/share/keyrings/wazuh.gpg] https://packages.wazuh.com/4.x/apt/ stable main" | sudo tee /etc/apt/sources.list.d/wazuh.list
+sudo apt-get update
+sudo apt-get install wazuh-agent=4.12.0-1
 
-# Configurar agente
-/var/ossec/bin/agent-auth -m <WAZUH_MANAGER_IP> -p 1515
-systemctl start wazuh-agent
-systemctl enable wazuh-agent
+# Configurar agente com endereço do manager
+sudo sed -i 's|MANAGER_IP|<WAZUH_MANAGER_IP>|g' /var/ossec/etc/ossec.conf
+
+# Registrar agente
+sudo /var/ossec/bin/agent-auth -m <WAZUH_MANAGER_IP> -p 1515
+
+# Iniciar agente
+sudo systemctl daemon-reload
+sudo systemctl enable wazuh-agent
+sudo systemctl start wazuh-agent
+
+# Verificar status
+sudo systemctl status wazuh-agent
 ```
 
 ### **📱 App Mobile Oficial**
@@ -530,6 +544,17 @@ https://packages.wazuh.com/4.x/wazuh-app/wazuhapp.wazuh.com/
 
 ## 📝 **Changelog**
 
+### **v2.0.0** (2025-12-05) - Wazuh 4.12 Update
+- ✅ Atualização para Wazuh 4.12+
+- ✅ Novos recursos: eBPF FIM, CTI links, hot reload
+- ✅ Integração Shuffle (parceria oficial Set/2025)
+- ✅ Integração n8n para SOAR
+- ✅ Odoo 19 + OCA modules integration
+- ✅ Custom rules com exemplos XML
+- ✅ OpenSearch 2.x dashboards
+- ✅ AWS Security Hub integration
+- ✅ Azure Sentinel integration
+
 ### **v1.0.0** (2025-01-05)
 - ✅ Versão inicial
 - ✅ Documentação PT completa
@@ -537,9 +562,11 @@ https://packages.wazuh.com/4.x/wazuh-app/wazuhapp.wazuh.com/
 - ✅ Mobile development guides
 - ✅ Stack NetBox+Wazuh+Odoo
 
-### **v1.1.0** (Planejado)
-- [ ] Tradução ES completa
-- [ ] Videos tutoriais
-- [ ] Hands-on labs
-- [ ] Certificação Wazuh
-- [ ] Marketplace de plugins
+### **v2.1.0** (Planejado - Q1 2026)
+- [ ] Tradução ES completa (95% feito)
+- [ ] Videos tutoriais em PT/ES
+- [ ] Hands-on labs interativos
+- [ ] Certificação Wazuh Partner
+- [ ] Marketplace de plugins customizados
+- [ ] AI-powered threat hunting
+- [ ] Kubernetes operator
