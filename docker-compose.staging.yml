@@ -1,0 +1,167 @@
+# ==============================================================================
+# DOCKER COMPOSE - STAGING ENVIRONMENT
+# NEO_STACK Platform v3.0 - All Portals
+# ==============================================================================
+
+version: '3.8'
+
+services:
+  # Admin Portal
+  admin-portal:
+    build:
+      context: ./admin-portal
+      dockerfile: Dockerfile.staging
+    container_name: neo-stack-admin-staging
+    ports:
+      - "3001:3000"
+    environment:
+      - NODE_ENV=staging
+      - PORT=3000
+      - NUXT_PUBLIC_API_BASE=https://api-staging.neo-stack.com
+    volumes:
+      - ./admin-portal/.output:/app/.output:ro
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3000/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    networks:
+      - neo-stack-network
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.admin-staging.rule=Host(`admin-staging.neo-stack.com`)"
+      - "traefik.http.routers.admin-staging.entrypoints=websecure"
+      - "traefik.http.routers.admin-staging.tls.certresolver=letsencrypt"
+
+  # Tenant Portal
+  tenant-portal:
+    build:
+      context: ./tenant-portal
+      dockerfile: Dockerfile.staging
+    container_name: neo-stack-tenant-staging
+    ports:
+      - "3002:3000"
+    environment:
+      - NODE_ENV=staging
+      - PORT=3000
+      - NUXT_PUBLIC_API_BASE=https://api-staging.neo-stack.com
+    volumes:
+      - ./tenant-portal/.output:/app/.output:ro
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3000/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    networks:
+      - neo-stack-network
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.tenant-staging.rule=Host(`tenant-staging.neo-stack.com`)"
+      - "traefik.http.routers.tenant-staging.entrypoints=websecure"
+      - "traefik.http.routers.tenant-staging.tls.certresolver=letsencrypt"
+
+  # Certification Portal
+  certification-portal:
+    build:
+      context: ./certification/frontend
+      dockerfile: Dockerfile.staging
+    container_name: neo-stack-cert-staging
+    ports:
+      - "3003:3000"
+    environment:
+      - NODE_ENV=staging
+      - PORT=3000
+      - NUXT_PUBLIC_API_BASE=https://api-staging.neo-stack.com
+    volumes:
+      - ./certification/frontend/.output:/app/.output:ro
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3000/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    networks:
+      - neo-stack-network
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.cert-staging.rule=Host(`cert-staging.neo-stack.com`)"
+      - "traefik.http.routers.cert-staging.entrypoints=websecure"
+      - "traefik.http.routers.cert-staging.tls.certresolver=letsencrypt"
+
+  # Reverse Proxy (Traefik)
+  traefik:
+    image: traefik:v3.0
+    container_name: neo-stack-traefik-staging
+    command:
+      - "--api.dashboard=true"
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.websecure.address=:443"
+      - "--entrypoints.web.http.redirections.entryPoint.to=websecure"
+      - "--entrypoints.web.http.redirections.entryPoint.scheme=https"
+      - "--certificatesresolvers.letsencrypt.acme.email=admin@neo-stack.com"
+      - "--certificatesresolvers.letsencrypt.acme.storage=/acme.json"
+      - "--certificatesresolvers.letsencrypt.acme.httpchallenge.entrypoint=web"
+    ports:
+      - "80:80"
+      - "443:443"
+      - "8080:8080"  # Traefik dashboard
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - traefik-staging:/acme
+    networks:
+      - neo-stack-network
+    restart: unless-stopped
+
+  # Monitoring (Optional)
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: neo-stack-prometheus-staging
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus-staging:/prometheus
+    networks:
+      - neo-stack-network
+    restart: unless-stopped
+    profiles:
+      - monitoring
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: neo-stack-grafana-staging
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    volumes:
+      - grafana-staging:/var/lib/grafana
+      - ./monitoring/grafana/dashboards:/etc/grafana/provisioning/dashboards
+      - ./monitoring/grafana/datasources:/etc/grafana/provisioning/datasources
+    networks:
+      - neo-stack-network
+    restart: unless-stopped
+    profiles:
+      - monitoring
+
+networks:
+  neo-stack-network:
+    driver: bridge
+
+volumes:
+  traefik-staging:
+  prometheus-staging:
+  grafana-staging:
