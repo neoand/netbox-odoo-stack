@@ -1,0 +1,80 @@
+# Docker Compose for Admin Portal - NEO_STACK Platform v3.0
+# Nuxt 3 + Vue 3 + Nuxt UI Admin Portal
+
+version: '3.8'
+
+services:
+  #####################
+  # Admin Portal (Nuxt 3)
+  #####################
+  admin-portal:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    container_name: admin-portal
+    environment:
+      # API Configuration
+      API_BASE_URL: ${API_BASE_URL:-http://localhost:8000}
+      AUTH_URL: ${AUTH_URL:-http://localhost:8080}
+      BILLING_URL: ${BILLING_URL:-http://localhost:8000}
+      NETBOX_URL: ${NETBOX_URL:-http://localhost:8001}
+      ODOO_URL: ${ODOO_URL:-http://localhost:8069}
+
+      # Node Environment
+      NODE_ENV: ${NODE_ENV:-production}
+      NUXT_HOST: 0.0.0.0
+      NUXT_PORT: 3002
+
+      # Security
+      SESSION_SECRET: ${SESSION_SECRET:-your-session-secret-change-me}
+
+    volumes:
+      - ../public:/app/public:ro
+      - ../.output:/app/.output:ro
+
+    ports:
+      - "3002:3002"
+
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3002/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+    networks:
+      - admin-network
+    restart: unless-stopped
+
+  #####################
+  # Nginx Reverse Proxy
+  #####################
+  nginx:
+    image: nginx:alpine
+    container_name: admin-portal-nginx
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/conf.d:/etc/nginx/conf.d:ro
+      - ../public:/var/www/html:ro
+      - ../.output/public:/var/www/html/assets:ro
+      - logs/nginx:/var/log/nginx
+      - ./certs:/etc/nginx/certs:ro
+    ports:
+      - "80:80"
+      - "443:443"
+    depends_on:
+      - admin-portal
+    networks:
+      - admin-network
+    restart: unless-stopped
+
+networks:
+  admin-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.21.0.0/16
+
+volumes:
+  nginx-logs:
+    driver: local

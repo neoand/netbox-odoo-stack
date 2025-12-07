@@ -1,0 +1,80 @@
+# Docker Compose for Tenant Portal - NEO_STACK Platform v3.0
+# Nuxt 3 + Vue 3 + Nuxt UI Tenant Portal
+
+version: '3.8'
+
+services:
+  #####################
+  # Tenant Portal (Nuxt 3)
+  #####################
+  tenant-portal:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    container_name: tenant-portal
+    environment:
+      # API Configuration
+      API_BASE_URL: ${API_BASE_URL:-http://localhost:8000}
+      AUTH_URL: ${AUTH_URL:-http://localhost:8080}
+      BILLING_URL: ${BILLING_URL:-http://localhost:8000}
+      NETBOX_URL: ${NETBOX_URL:-http://localhost:8001}
+      ODOO_URL: ${ODOO_URL:-http://localhost:8069}
+
+      # Node Environment
+      NODE_ENV: ${NODE_ENV:-production}
+      NUXT_HOST: 0.0.0.0
+      NUXT_PORT: 3003
+
+      # Security
+      SESSION_SECRET: ${SESSION_SECRET:-your-session-secret-change-me}
+
+    volumes:
+      - ../public:/app/public:ro
+      - ../.output:/app/.output:ro
+
+    ports:
+      - "3003:3003"
+
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3003/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+    networks:
+      - tenant-network
+    restart: unless-stopped
+
+  #####################
+  # Nginx Reverse Proxy
+  #####################
+  nginx:
+    image: nginx:alpine
+    container_name: tenant-portal-nginx
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/conf.d:/etc/nginx/conf.d:ro
+      - ../public:/var/www/html:ro
+      - ../.output/public:/var/www/html/assets:ro
+      - logs/nginx:/var/log/nginx
+      - ./certs:/etc/nginx/certs:ro
+    ports:
+      - "8080:80"
+      - "8443:443"
+    depends_on:
+      - tenant-portal
+    networks:
+      - tenant-network
+    restart: unless-stopped
+
+networks:
+  tenant-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.22.0.0/16
+
+volumes:
+  nginx-logs:
+    driver: local
