@@ -1,0 +1,555 @@
+{
+  "project": {
+    "name": "NEO_STACK Platform",
+    "version": "3.0",
+    "type": "SaaS Multi-tenant Platform",
+    "description": "Plataforma SaaS enterprise com event-driven architecture usando Centrifugo para real-time capabilities",
+    "repository": "https://github.com/neoand/netbox-odoo-stack.git",
+    "status": "v3.0 - Frontend Complete, Backend Planned"
+  },
+
+  "architecture": {
+    "current": {
+      "implemented": [
+        "Base Template (29 files)",
+        "Admin Portal (Nuxt 3)",
+        "Tenant Portal (Nuxt 3)",
+        "Certification Portal (Nuxt 3)",
+        "Docker Compose + Traefik"
+      ],
+      "planned": [
+        "Event Service (Centrifugo)",
+        "API Gateway",
+        "Auth Service",
+        "Tenant Manager",
+        "Billing Service",
+        "Database (PostgreSQL)",
+        "Message Broker (Redis)"
+      ]
+    },
+
+    "frontend": {
+      "framework": "Nuxt 3.20.1",
+      "language": "TypeScript 5.3.3",
+      "ui_library": "Nuxt UI 2.22.3",
+      "styling": "Tailwind CSS",
+      "state": "Pinia",
+      "icons": "Heroicons",
+      "api_client": "Axios"
+    },
+
+    "backend": {
+      "runtime": "Node.js 18+",
+      "language": "TypeScript 5.3.3",
+      "event_server": "Centrifugo v3",
+      "cache": "Redis 7",
+      "database": "PostgreSQL (planned)",
+      "auth": "JWT (jsonwebtoken)"
+    },
+
+    "infrastructure": {
+      "container": "Docker + Docker Compose",
+      "reverse_proxy": "Traefik v3.0",
+      "ssl": "Let's Encrypt",
+      "orchestration": "Kubernetes (planned)"
+    }
+  },
+
+  "centrifugo_integration": {
+    "purpose": "Real-time event system for multi-tenant SaaS platform",
+    "components": {
+      "publishers": [
+        "DeploymentPublisher",
+        "BillingPublisher",
+        "MetricsPublisher",
+        "NotificationPublisher",
+        "PresencePublisher"
+      ],
+      "channels": {
+        "pattern": "tenant:{tenantId}:{resource}",
+        "examples": [
+          "tenant:123:deployments",
+          "tenant:123:billing",
+          "tenant:123:metrics",
+          "tenant:123:presence",
+          "admin:metrics",
+          "admin:alerts"
+        ]
+      },
+      "middleware": [
+        "AuthMiddleware",
+        "TenantIsolation",
+        "RateLimiting",
+        "RBAC"
+      ]
+    },
+
+    "event_types": {
+      "deployment": [
+        "deployment_start",
+        "deployment_progress",
+        "deployment_complete",
+        "deployment_error"
+      ],
+      "billing": [
+        "billing_invoice",
+        "billing_payment",
+        "billing_usage_alert",
+        "billing_plan_change"
+      ],
+      "metrics": [
+        "metrics_update",
+        "metrics_cpu",
+        "metrics_memory",
+        "metrics_disk"
+      ],
+      "alerts": [
+        "alert_critical",
+        "alert_warning",
+        "alert_info"
+      ],
+      "presence": [
+        "presence_update",
+        "presence_join",
+        "presence_leave"
+      ]
+    },
+
+    "security": {
+      "authentication": "JWT tokens with tenantId validation",
+      "authorization": "RBAC (Role-Based Access Control)",
+      "isolation": "Per-tenant channel isolation",
+      "encryption": "TLS 1.3 for WebSocket connections",
+      "rate_limiting": "Per-tenant and per-user limits"
+    },
+
+    "scaling": {
+      "redis_cluster": "Redis Cluster for high availability",
+      "centrifugo_horizontal": "Multiple Centrifugo instances with sticky sessions",
+      "load_balancing": "Traefik with session affinity",
+      "message_batching": "Batch messages for better throughput"
+    }
+  },
+
+  "code_patterns": {
+    "frontend_composables": {
+      "pattern": "use{Resource}Events",
+      "examples": [
+        "useDeploymentEvents",
+        "useBillingEvents",
+        "useMetricsEvents",
+        "usePresenceEvents",
+        "useNotifications"
+      ],
+      "common_structure": {
+        "state": "ref<Map<string, EventType>>",
+        "connection": "WebSocket connection management",
+        "subscribe": "Channel subscription handler",
+        "auto_reconnect": "Automatic reconnection logic",
+        "cleanup": "onUnmounted cleanup"
+      }
+    },
+
+    "backend_publishers": {
+      "pattern": "{Resource}Publisher extends EventEmitter",
+      "interface": "EventEmitter for loose coupling",
+      "methods": [
+        "publish{Event}(tenantId, data)",
+        "broadcast{Event}(data)",
+        "sendToTenant(tenantId, event, data)"
+      ]
+    },
+
+    "channel_naming": {
+      "tenant_specific": "tenant:{tenantId}:{resource}",
+      "admin_global": "admin:{resource}",
+      "system_wide": "system:{resource}",
+      "user_specific": "user:{userId}:{resource}"
+    },
+
+    "event_schema": {
+      "required_fields": [
+        "type (string)",
+        "data (object)",
+        "timestamp (ISO 8601)"
+      ],
+      "optional_fields": [
+        "tenantId",
+        "userId",
+        "metadata",
+        "correlationId"
+      ]
+    }
+  },
+
+  "portals": {
+    "admin_portal": {
+      "path": "admin-portal/",
+      "features": [
+        "Tenant management",
+        "Billing oversight",
+        "System metrics",
+        "User management",
+        "Platform monitoring"
+      ],
+      "real_time_features": [
+        "System dashboard with live metrics",
+        "Tenant activity feed",
+        "Alert notifications",
+        "Deployment monitoring"
+      ]
+    },
+
+    "tenant_portal": {
+      "path": "tenant-portal/",
+      "features": [
+        "Subscription management",
+        "Billing & invoices",
+        "Usage metrics",
+        "API layer demo",
+        "Instance management"
+      ],
+      "real_time_features": [
+        "Deployment status updates",
+        "Billing notifications",
+        "Usage alerts",
+        "Presence indicators",
+        "Live metrics dashboard"
+      ]
+    },
+
+    "certification_portal": {
+      "path": "certification/frontend/",
+      "features": [
+        "Exam system",
+        "Timer tracking",
+        "Question/answers",
+        "Certifications (Bronze/Silver/Gold)",
+        "Certificate download"
+      ],
+      "real_time_features": [
+        "Live exam timer sync",
+        "Proctoring events",
+        "Result notifications",
+        "Collaboration features"
+      ]
+    }
+  },
+
+  "documentation": {
+    "structure": {
+      "docs": {
+        "pt": "Português Brasil",
+        "es": "Español México"
+      },
+      "internal": "Technical documentation (internal)"
+    },
+
+    "files": {
+      "guides": [
+        "centrifugo-guide.md",
+        "centrifugo-use-cases.md"
+      ],
+      "analysis": [
+        "ARCHITECTURE_MAP_CURRENT.md",
+        "CENTRIFUGO_INTEGRATION_PROPOSAL.md",
+        "IMPLEMENTATION_ROADMAP.md"
+      ]
+    },
+
+    "bilingual": {
+      "languages": ["pt-BR", "es-MX"],
+      "sync": "All docs mirrored in both languages",
+      "examples": "Code examples use international best practices"
+    }
+  },
+
+  "implementation_roadmap": {
+    "duration": "45 days",
+    "sprints": 4,
+    "teams": 3,
+    "sprint_1": {
+      "name": "Foundation",
+      "duration": "7 days",
+      "focus": "Infrastructure setup",
+      "tasks": [
+        "Setup Centrifugo",
+        "Redis configuration",
+        "Multi-tenant structure",
+        "Testing & documentation"
+      ]
+    },
+    "sprint_2": {
+      "name": "Core Events",
+      "duration": "14 days",
+      "focus": "Event publishers and API",
+      "tasks": [
+        "Deploy Publishers",
+        "Event definitions",
+        "API integration",
+        "Channel handlers"
+      ]
+    },
+    "sprint_3": {
+      "name": "Frontend Integration",
+      "duration": "14 days",
+      "focus": "Real-time UI implementation",
+      "tasks": [
+        "Composables development",
+        "Portal integration",
+        "Real-time dashboards",
+        "E2E testing"
+      ]
+    },
+    "sprint_4": {
+      "name": "Advanced Features",
+      "duration": "14 days",
+      "focus": "Security and scaling",
+      "tasks": [
+        "Security hardening",
+        "Scalability",
+        "Monitoring",
+        "Advanced features"
+      ]
+    }
+  },
+
+  "use_cases": [
+    {
+      "name": "Deployment Notifications",
+      "description": "Real-time deployment status updates",
+      "channels": ["tenant:{id}:deployments"],
+      "events": ["start", "progress", "complete", "error"],
+      "frontend": "DeploymentMonitor.vue"
+    },
+    {
+      "name": "Billing Notifications",
+      "description": "Invoice and payment notifications",
+      "channels": ["tenant:{id}:billing"],
+      "events": ["invoice", "payment", "usage_alert"],
+      "frontend": "BillingNotifications.vue"
+    },
+    {
+      "name": "Real-time Dashboards",
+      "description": "Live metrics and system status",
+      "channels": ["tenant:{id}:metrics", "admin:metrics"],
+      "events": ["metrics_update", "alert"],
+      "frontend": "RealTimeDashboard.vue"
+    },
+    {
+      "name": "User Presence",
+      "description": "Online user tracking",
+      "channels": ["tenant:{id}:presence"],
+      "events": ["presence_update", "join", "leave"],
+      "frontend": "UserPresence.vue"
+    },
+    {
+      "name": "Authentication & Security",
+      "description": "JWT-based auth with tenant isolation",
+      "middleware": ["AuthMiddleware", "TenantIsolation"],
+      "features": ["JWT validation", "RBAC", "Rate limiting"]
+    },
+    {
+      "name": "Message History",
+      "description": "Redis-based event history",
+      "service": "HistoryService",
+      "features": ["Store", "Retrieve", "Search", "Pagination"]
+    },
+    {
+      "name": "Automated Testing",
+      "description": "Integration tests for event flow",
+      "framework": "Jest + WebSocket testing",
+      "coverage": "Publishers, subscribers, channels"
+    },
+    {
+      "name": "Monitoring & Observability",
+      "description": "Prometheus metrics collection",
+      "metrics": ["events_published", "events_received", "latency", "connections"],
+      "dashboards": "Grafana integration"
+    }
+  ],
+
+  "technical_stack": {
+    "runtime": {
+      "node": "18.x",
+      "npm": "9.x"
+    },
+    "frontend": {
+      "nuxt": "3.20.1",
+      "vue": "3.5.25",
+      "typescript": "5.3.3",
+      "nuxt_ui": "2.22.3",
+      "tailwind": "3.x",
+      "pinia": "2.x",
+      "axios": "1.x"
+    },
+    "backend": {
+      "centrifugo": "3.x",
+      "redis": "7.x",
+      "postgresql": "15.x (planned)",
+      "jsonwebtoken": "9.x",
+      "ioredis": "5.x"
+    },
+    "devops": {
+      "docker": "24.x",
+      "docker_compose": "2.x",
+      "traefik": "3.x",
+      "kubernetes": "1.28 (planned)"
+    },
+    "monitoring": {
+      "prometheus": "latest",
+      "grafana": "latest",
+      "jaeger": "latest",
+      "elk": "latest"
+    }
+  },
+
+  "testing": {
+    "unit": {
+      "framework": "Jest",
+      "coverage": "Publishers, services, middleware",
+      "pattern": "*.test.ts"
+    },
+    "integration": {
+      "framework": "Jest + WebSocket",
+      "coverage": "End-to-end event flow",
+      "pattern": "*.test.ts in integration/"
+    },
+    "e2e": {
+      "framework": "Playwright/Cypress",
+      "coverage": "Full portal workflows",
+      "pattern": "*.spec.ts"
+    }
+  },
+
+  "environment_variables": {
+    "centrifugo": [
+      "CENTRIFUGO_URL",
+      "CENTRIFUGO_TOKEN",
+      "CENTRIFUGO_SECRET"
+    ],
+    "redis": [
+      "REDIS_URL",
+      "REDIS_PASSWORD"
+    ],
+    "auth": [
+      "JWT_SECRET",
+      "JWT_EXPIRY"
+    ],
+    "api": [
+      "API_BASE_URL",
+      "API_TIMEOUT"
+    ]
+  },
+
+  "docker_compose": {
+    "services": {
+      "centrifugo": {
+        "image": "centrifugo/centrifugo:v3",
+        "ports": ["8000:8000"],
+        "volumes": ["./config/centrifugo.json:/centrifugo.json"],
+        "environment": ["CENTRIFUGO_CONFIG=/centrifugo.json"]
+      },
+      "redis": {
+        "image": "redis:7-alpine",
+        "ports": ["6379:6379"],
+        "volumes": ["redis_data:/data"],
+        "command": "redis-server --appendonly yes"
+      }
+    }
+  },
+
+  "best_practices": {
+    "security": [
+      "Validate JWT tokens on every request",
+      "Implement tenant isolation at channel level",
+      "Use RBAC for fine-grained permissions",
+      "Enable rate limiting per tenant",
+      "Encrypt WebSocket connections (WSS)"
+    ],
+    "performance": [
+      "Batch messages for high-throughput scenarios",
+      "Use Redis clustering for scalability",
+      "Implement connection pooling",
+      "Monitor message queue depth",
+      "Use compression for large payloads"
+    ],
+    "reliability": [
+      "Implement automatic reconnection logic",
+      "Store message history in Redis",
+      "Use dead letter queues for failed messages",
+      "Set appropriate timeouts",
+      "Implement circuit breakers"
+    ],
+    "monitoring": [
+      "Track event publish/receive rates",
+      "Monitor WebSocket connection counts",
+      "Alert on high latency",
+      "Track error rates by tenant",
+      "Monitor Redis memory usage"
+    ]
+  },
+
+  "learning_path": {
+    "beginner": [
+      "1. Understand WebSocket basics",
+      "2. Learn Pub/Sub pattern",
+      "3. Study event-driven architecture",
+      "4. Practice with simple publishers",
+      "5. Build basic real-time UI"
+    ],
+    "intermediate": [
+      "1. Multi-tenant architecture",
+      "2. JWT authentication",
+      "3. RBAC implementation",
+      "4. Redis integration",
+      "5. Testing WebSocket connections"
+    ],
+    "advanced": [
+      "1. Scalability patterns",
+      "2. Monitoring & observability",
+      "3. Security hardening",
+      "4. Performance optimization",
+      "5. Chaos engineering"
+    ]
+  },
+
+  "troubleshooting": {
+    "common_issues": [
+      {
+        "issue": "WebSocket connection fails",
+        "causes": ["Invalid token", "CORS issues", "Network timeout"],
+        "solutions": ["Validate JWT", "Check CORS config", "Increase timeout"]
+      },
+      {
+        "issue": "Messages not received",
+        "causes": ["Not subscribed", "Wrong channel", "Tenant mismatch"],
+        "solutions": ["Verify subscription", "Check channel name", "Validate tenantId"]
+      },
+      {
+        "issue": "High latency",
+        "causes": ["Network congestion", "Large payloads", "Redis slowness"],
+        "solutions": ["Compress messages", "Batch updates", "Redis optimization"]
+      },
+      {
+        "issue": "Memory leaks",
+        "causes": ["Missing cleanup", "Event listeners", "WebSocket not closed"],
+        "solutions": ["onUnmounted cleanup", "Remove listeners", "Close connections"]
+      }
+    ]
+  },
+
+  "references": {
+    "official": [
+      "https://centrifugal.dev/guide/",
+      "https://redis.io/docs/",
+      "https://nuxt.com/docs",
+      "https://vuejs.org/guide/"
+    ],
+    "tools": [
+      "https://centrifugal.dev/tools/config/",
+      "https://redis.io/docs/manual/cli/",
+      "https://www.websocket.org/echo.html"
+    ]
+  }
+}
